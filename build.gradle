@@ -1,9 +1,19 @@
 apply plugin: 'groovy'
+apply plugin: 'maven'
 
 group = 'fr.jcgay'
 version = '0.1-SNAPSHOT'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile gradleApi()
     compile localGroovy()
+
+    compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.4'
+
+    testCompile group:'org.mockito', name: 'mockito-core', version: '2.0.7-beta'
+    testCompile group:'org.assertj', name: 'assertj-core', version: '2.0.0'
 }
