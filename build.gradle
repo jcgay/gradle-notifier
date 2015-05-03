@@ -1,11 +1,13 @@
 buildscript {
     repositories {
+        mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
         classpath "com.gradle.publish:plugin-publish-plugin:0.9.0"
+        classpath 'org.ajoberstar:gradle-git:1.1.0'
     }
 }
 
@@ -109,5 +111,13 @@ pluginBundle {
             id = 'fr.jcgay.gradle-notifier'
             displayName = 'Gradle Notifier'
         }
+    }
+}
+
+task release(dependsOn: ['build', 'uploadArchives', 'publishPlugins']) << {
+    def grgit = org.ajoberstar.grgit.Grgit.open(project.file('.'))
+    grgit.tag.add {
+        name = "v$version"
+        message = "Release $name"
     }
 }
