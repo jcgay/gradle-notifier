@@ -17,6 +17,9 @@ apply plugin: "com.gradle.plugin-publish"
 group = 'fr.jcgay'
 version = '0.1-SNAPSHOT'
 
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
 repositories {
     mavenCentral()
 }
@@ -28,7 +31,7 @@ dependencies {
     compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.4'
 
     testCompile group:'org.mockito', name: 'mockito-core', version: '2.0.7-beta'
-    testCompile group:'org.assertj', name: 'assertj-core', version: '2.0.0'
+    testCompile group:'org.assertj', name: 'assertj-core', version: '1.7.1'
 }
 
 task javadocJar(type: Jar) {
