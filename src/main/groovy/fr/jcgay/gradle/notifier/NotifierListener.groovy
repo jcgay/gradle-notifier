@@ -38,7 +38,7 @@ class NotifierListener extends BuildAdapter {
     }
 
     private String message(BuildResult result) {
-        hasSucceeded(result) ? "Built in: ${startedStopWatch.elapsed(SECONDS)} second(s)."
+        hasSucceeded(result) ? "Done in: ${startedStopWatch.elapsed(SECONDS)} second(s)."
             : result.failure.message
     }
 

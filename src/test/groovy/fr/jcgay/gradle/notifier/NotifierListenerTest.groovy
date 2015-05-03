@@ -62,7 +62,7 @@ public class NotifierListenerTest {
         assertThat(notification.title()).isEqualTo('project')
         assertThat(notification.subtitle()).isEqualTo('Success')
         assertThat(notification.icon()).isSameAs(SUCCESS.icon)
-        assertThat(notification.message()).isEqualTo('Built in: 5 second(s).')
+        assertThat(notification.message()).isEqualTo('Done in: 5 second(s).')
         assertThat(notification.level()).isEqualTo(INFO)
     }
 
