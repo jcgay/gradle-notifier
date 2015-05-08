@@ -17,7 +17,7 @@ apply plugin: 'signing'
 apply plugin: "com.gradle.plugin-publish"
 
 group = 'fr.jcgay'
-version = 0.1
+version = '0.2-SNAPSHOT'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
