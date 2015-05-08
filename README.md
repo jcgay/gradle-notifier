@@ -14,12 +14,11 @@ For example, create (or edit) `$HOME/.gradle/init.gradle` file:
 ```
 initscript {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.1-SNAPSHOT'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.1'
     }
 }
 
@@ -35,12 +34,11 @@ In `build.gradle`, add:
 ```
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.1-SNAPSHOT'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.1'
     }
 }
 
