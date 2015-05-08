@@ -1,6 +1,7 @@
 package fr.jcgay.gradle.notifier.extension
 import org.junit.Test
 
+import static java.util.concurrent.TimeUnit.SECONDS
 import static org.assertj.core.api.Assertions.assertThat
 
 class ConfigurationTest {
@@ -36,5 +37,18 @@ class ConfigurationTest {
     @Test
     void 'should not fail when configuration is not set'() {
         new Configuration().asProperties()
+    }
+
+    @Test
+    void 'should set threshold'() {
+        def configuration = new Configuration()
+
+        configuration.threshold {
+            time = 3
+            unit = SECONDS
+        }
+
+        assertThat(configuration.threshold.time).isEqualTo(3)
+        assertThat(configuration.threshold.unit).isEqualTo(SECONDS)
     }
 }

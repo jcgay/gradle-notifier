@@ -44,10 +44,20 @@ final class Stopwatch {
 
     Stopwatch start() {
         if (isRunning) {
-            throw new IllegalArgumentException('This stopwatch is already running.')
+            throw new IllegalStateException('This stopwatch is already running.')
         }
         isRunning = true
         startTick = ticker.read()
+        this
+    }
+
+    Stopwatch stop() {
+        long tick = ticker.read()
+        if (!isRunning) {
+            throw new IllegalStateException('This stopwatch is already stopped.')
+        }
+        isRunning = false
+        elapsedNanos += tick - startTick
         this
     }
 

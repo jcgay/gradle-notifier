@@ -1,4 +1,6 @@
 package fr.jcgay.gradle.notifier
+
+import fr.jcgay.gradle.notifier.extension.TimeThreshold
 import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Notification
 import fr.jcgay.notification.Notifier
@@ -14,10 +16,12 @@ import static java.util.concurrent.TimeUnit.SECONDS
 class NotifierListener extends BuildAdapter {
 
     private final Notifier notifier
-    private final Stopwatch startedStopWatch
+    private final Stopwatch timer
+    private final TimeThreshold threshold
 
-    NotifierListener(Notifier notifier, Stopwatch startedStopWatch) {
-        this.startedStopWatch = startedStopWatch
+    NotifierListener(Notifier notifier, Stopwatch timer, TimeThreshold threshold) {
+        this.threshold = threshold
+        this.timer = timer
         this.notifier = notifier
         notifier.init()
     }
@@ -25,20 +29,22 @@ class NotifierListener extends BuildAdapter {
     @Override
     void buildFinished(BuildResult result) {
         try {
-            def status = status(result)
-            notifier.send(
-                Notification.builder(result.gradle.rootProject.name, message(result), status.icon)
-                    .withSubtitle(status.message)
-                    .withLevel(status.level)
-                    .build()
-            )
+            if (TimeThreshold.of(timer) >= threshold) {
+                def status = status(result)
+                notifier.send(
+                    Notification.builder(result.gradle.rootProject.name, message(result), status.icon)
+                        .withSubtitle(status.message)
+                        .withLevel(status.level)
+                        .build()
+                )
+            }
         } finally {
             notifier.close()
         }
     }
 
     private String message(BuildResult result) {
-        hasSucceeded(result) ? "Done in: ${startedStopWatch.elapsed(SECONDS)} second(s)."
+        hasSucceeded(result) ? "Done in: ${timer.elapsed(SECONDS)} second(s)."
             : result.failure.message
     }
 

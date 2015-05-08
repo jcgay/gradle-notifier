@@ -39,7 +39,7 @@ class GradleNotifierPlugin implements Plugin<Project> {
                 .addConfigurationProperties(project.notifier.asProperties())
                 .chooseNotifier()
 
-            project.gradle.addBuildListener(new NotifierListener(notifier, stopwatch))
+            project.gradle.addBuildListener(new NotifierListener(notifier, stopwatch, project.notifier.threshold))
         }
 
     }

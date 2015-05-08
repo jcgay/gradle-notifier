@@ -1,4 +1,6 @@
 package fr.jcgay.gradle.notifier
+
+import fr.jcgay.gradle.notifier.extension.TimeThreshold
 import fr.jcgay.notification.Notification
 import fr.jcgay.notification.Notifier
 import groovy.transform.CompileStatic
@@ -21,6 +23,8 @@ import static fr.jcgay.notification.Notification.Level.INFO
 import static java.util.concurrent.TimeUnit.SECONDS
 import static org.assertj.core.api.Assertions.assertThat
 import static org.mockito.Answers.RETURNS_DEEP_STUBS
+import static org.mockito.Matchers.any
+import static org.mockito.Mockito.never
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
@@ -43,7 +47,7 @@ public class NotifierListenerTest {
 
     @Before
     void 'setup'() {
-        listener = new NotifierListener(notifier, aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)))
+        listener = new NotifierListener(notifier, aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)), new TimeThreshold())
     }
 
     @Test
@@ -79,6 +83,19 @@ public class NotifierListenerTest {
         assertThat(notification.icon()).isSameAs(FAILURE.icon)
         assertThat(notification.message()).isEqualTo('exception message')
         assertThat(notification.level()).isEqualTo(ERROR)
+    }
+
+    @Test
+    void 'should not send a notification when build exceed threshold'() {
+        def listener = new NotifierListener(
+            notifier,
+            aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)),
+            new TimeThreshold(time: 10L, unit: SECONDS)
+        )
+
+        listener.buildFinished(successBuild('project'))
+
+        verify(notifier, never()).send(any(Notification))
     }
 
     private BuildResult successBuild(String name) {

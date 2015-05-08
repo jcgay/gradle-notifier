@@ -9,7 +9,7 @@ import groovy.transform.CompileStatic
 class KnownElapsedTimeTicker extends Ticker {
 
     private long expectedElapsedTime
-    private boolean firstRead
+    private boolean isStartTick = true
 
     KnownElapsedTimeTicker(long expectedElapsedTime) {
         this.expectedElapsedTime = expectedElapsedTime
@@ -19,9 +19,16 @@ class KnownElapsedTimeTicker extends Ticker {
         Stopwatch.createStarted(new KnownElapsedTimeTicker(elapsedTimeNano))
     }
 
+    static Stopwatch aStopWatchWithElapsedTime(long elapsedTimeNano) {
+        aStartedStopwatchWithElapsedTime(elapsedTimeNano).stop()
+    }
+
     @Override
     long read() {
-        firstRead = !firstRead;
-        firstRead ? 0 : expectedElapsedTime
+        if (isStartTick) {
+            isStartTick = !isStartTick;
+            return 0
+        }
+        expectedElapsedTime
     }
 }

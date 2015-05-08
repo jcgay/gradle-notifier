@@ -15,6 +15,7 @@ class Configuration {
     Notifu notifu = new Notifu()
     Kdialog kdialog = new Kdialog()
     AnyBar anyBar = new AnyBar()
+    TimeThreshold threshold = new TimeThreshold()
 
     static Properties createProperties(Map properties, String parentKey) {
         def result = new Properties()
@@ -60,6 +61,10 @@ class Configuration {
 
     void anybar(Closure closure) {
         configure(closure, anyBar)
+    }
+
+    void threshold(Closure closure) {
+        configure(closure, threshold)
     }
 
     Properties asProperties() {

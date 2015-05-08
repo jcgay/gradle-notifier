@@ -54,6 +54,10 @@ You can rely on a property file located at `$HOME/.send-notification` to configu
 ```
 notifier {
     implementation = 'notificationcenter'
+    threshold {
+        time = 10
+        unit = java.util.concurrent.TimeUnit.SECONDS
+    }
     growl {
         port = 23053
         host = 'localhost'
@@ -91,6 +95,8 @@ notifier {
     }
 }
 ```
+
+`notifier.threshold` allows to bypass notification when the build ends before the configured threshold.
 
 All parameters are configured by default, if you're fine with it, no need to write them down.  
 `Growl` is chosen for `OS X` and `Windows`, `notify-send` for `Linux`. 
