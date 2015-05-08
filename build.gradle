@@ -114,7 +114,7 @@ pluginBundle {
     }
 }
 
-task release(dependsOn: ['build', 'uploadArchives', 'publishPlugins']) << {
+task release(dependsOn: ['build', 'uploadArchives']) << {
     def grgit = org.ajoberstar.grgit.Grgit.open(project.file('.'))
     grgit.tag.add {
         name = "v$version"
