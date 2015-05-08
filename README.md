@@ -94,3 +94,6 @@ notifier {
 
 All parameters are configured by default, if you're fine with it, no need to write them down.  
 `Growl` is chosen for `OS X` and `Windows`, `notify-send` for `Linux`. 
+
+# Build status
+[![Build Status](https://travis-ci.org/jcgay/gradle-notifier.svg?branch=master)](https://travis-ci.org/jcgay/gradle-notifier)
