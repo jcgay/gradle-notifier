@@ -1,13 +1,14 @@
 package fr.jcgay.gradle.notifier.extension
-import org.junit.Test
+
+import spock.lang.Specification
 
 import static java.util.concurrent.TimeUnit.SECONDS
 import static org.assertj.core.api.Assertions.assertThat
 
-class ConfigurationTest {
+class ConfigurationTest extends Specification {
 
-    @Test
-    void 'should write configuration as properties'() {
+    def 'should write configuration as properties'() {
+        given:
         def configuration = new Configuration(implementation: 'anybar')
         configuration.growl.host = '192.168.1.30'
         configuration.anyBar.port = 1
@@ -19,8 +20,10 @@ class ConfigurationTest {
         configuration.snarl.port = 3
         configuration.systemTray.wait = 4
 
+        when:
         def result = configuration.asProperties()
 
+        then:
         assertThat(result)
             .containsEntry('notifier.implementation', 'anybar')
             .containsEntry("notifier.growl.host", '192.168.1.30')
@@ -34,21 +37,25 @@ class ConfigurationTest {
             .containsEntry('notifier.system-tray.wait', 4)
     }
 
-    @Test
-    void 'should not fail when configuration is not set'() {
-        new Configuration().asProperties()
+    def 'should not fail when configuration is not set'() {
+        when:
+        def result = new Configuration().asProperties()
+
+        then:
+        result != null
     }
 
-    @Test
-    void 'should set threshold'() {
+    def 'should set threshold'() {
+        given:
         def configuration = new Configuration()
 
+        when:
         configuration.threshold {
             time = 3
             unit = SECONDS
         }
 
-        assertThat(configuration.threshold.time).isEqualTo(3)
-        assertThat(configuration.threshold.unit).isEqualTo(SECONDS)
+        then:
+        configuration.threshold == new TimeThreshold(time: 3, unit: SECONDS)
     }
 }

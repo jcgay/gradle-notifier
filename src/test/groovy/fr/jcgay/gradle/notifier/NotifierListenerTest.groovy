@@ -1,19 +1,12 @@
 package fr.jcgay.gradle.notifier
-
 import fr.jcgay.gradle.notifier.extension.TimeThreshold
+import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Notification
 import fr.jcgay.notification.Notifier
-import groovy.transform.CompileStatic
 import org.gradle.BuildResult
+import org.gradle.api.Project
 import org.gradle.api.invocation.Gradle
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoRule
+import spock.lang.Specification
 
 import static fr.jcgay.gradle.notifier.KnownElapsedTimeTicker.aStartedStopwatchWithElapsedTime
 import static fr.jcgay.gradle.notifier.Status.FAILURE
@@ -21,90 +14,89 @@ import static fr.jcgay.gradle.notifier.Status.SUCCESS
 import static fr.jcgay.notification.Notification.Level.ERROR
 import static fr.jcgay.notification.Notification.Level.INFO
 import static java.util.concurrent.TimeUnit.SECONDS
-import static org.assertj.core.api.Assertions.assertThat
-import static org.mockito.Answers.RETURNS_DEEP_STUBS
-import static org.mockito.Matchers.any
-import static org.mockito.Mockito.never
-import static org.mockito.Mockito.verify
-import static org.mockito.Mockito.when
 
-@CompileStatic
-public class NotifierListenerTest {
+class NotifierListenerTest extends Specification {
 
-    @Rule
-    public MockitoRule mockito = MockitoJUnit.rule()
-
-    @Mock
-    Notifier notifier
-
-    @Mock(answer = RETURNS_DEEP_STUBS)
-    Gradle gradle
-
-    @Captor
-    ArgumentCaptor<Notification> capturedNotification
+    Notifier notifier = Mock(Notifier)
 
     NotifierListener listener
 
-    @Before
-    void 'setup'() {
+    def setup() {
         listener = new NotifierListener(notifier, aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)), new TimeThreshold())
     }
 
-    @Test
-    void 'should init notifier when instantiating NotifierListener'() {
-        verify(notifier).init()
+    def 'should init notifier when instantiating NotifierListener'() {
+        given:
+        def notifier = Mock(Notifier)
+
+        when:
+        new NotifierListener(notifier, anyStopwatch(), new TimeThreshold())
+
+        then:
+        1 * notifier.init()
     }
 
-    @Test
-    void 'should send a successful notification when build ends'() {
+    def 'should send a successful notification when build ends'() {
+        when:
         listener.buildFinished(successBuild('project'))
 
-        verify(notifier).send(capturedNotification.capture())
-        verify(notifier).close()
-
-        def notification = capturedNotification.getValue()
-        assertThat(notification.title()).isEqualTo('project')
-        assertThat(notification.subtitle()).isEqualTo('Success')
-        assertThat(notification.icon()).isSameAs(SUCCESS.icon)
-        assertThat(notification.message()).isEqualTo('Done in: 5 second(s).')
-        assertThat(notification.level()).isEqualTo(INFO)
+        then:
+        1 * notifier.send(
+            Notification.builder('project', 'Done in: 5 second(s).', SUCCESS.icon)
+                .withSubtitle('Success')
+                .withLevel(INFO)
+                .build()
+        )
+        1 * notifier.close()
     }
 
-    @Test
-    void 'should send a failure notification when build ends'() {
+    def 'should send a failure notification when build ends'() {
+        when:
         listener.buildFinished(failBuild('project fail', 'exception message'))
 
-        verify(notifier).send(capturedNotification.capture())
-        verify(notifier).close()
-
-        def notification = capturedNotification.getValue()
-        assertThat(notification.title()).isEqualTo('project fail')
-        assertThat(notification.subtitle()).isEqualTo('Failure')
-        assertThat(notification.icon()).isSameAs(FAILURE.icon)
-        assertThat(notification.message()).isEqualTo('exception message')
-        assertThat(notification.level()).isEqualTo(ERROR)
+        then:
+        1 * notifier.send(
+            Notification.builder('project fail', 'exception message', FAILURE.icon)
+                .withSubtitle('Failure')
+                .withLevel(ERROR)
+                .build()
+        )
+        1 * notifier.close()
     }
 
-    @Test
-    void 'should not send a notification when build exceed threshold'() {
+    def 'should not send a notification when build exceed threshold'() {
+        given:
         def listener = new NotifierListener(
             notifier,
             aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)),
             new TimeThreshold(time: 10L, unit: SECONDS)
         )
 
+        when:
         listener.buildFinished(successBuild('project'))
 
-        verify(notifier, never()).send(any(Notification))
+        then:
+        0 * notifier.send(_)
+    }
+
+    private static Stopwatch anyStopwatch() {
+        aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5))
     }
 
     private BuildResult successBuild(String name) {
-        when(gradle.rootProject.name).thenReturn(name)
-        new BuildResult(gradle, null)
+        new BuildResult(gradle(name), null)
     }
 
     private BuildResult failBuild(String name, String failureMessage) {
-        when(gradle.rootProject.name).thenReturn(name)
-        new BuildResult(gradle, new NullPointerException(failureMessage))
+        new BuildResult(gradle(name), new NullPointerException(failureMessage))
+    }
+
+    private Gradle gradle(String name) {
+        def gradle = Stub(Gradle) {
+            getRootProject() >> Stub(Project) {
+                getName() >> name
+            }
+        }
+        gradle
     }
 }
