@@ -36,7 +36,14 @@ dependencies {
     testCompile(group: 'org.spockframework', name:'spock-core', version: '1.0-groovy-2.3') {
         exclude module: 'groovy-all'
     }
+    testCompile(group: 'com.netflix.nebula', name: 'nebula-test', version: '2.2.1') {
+        exclude module: 'groovy-all'
+    }
     testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.1'
+}
+
+test {
+    jvmArgs "-XX:MaxPermSize=256m"
 }
 
 task javadocJar(type: Jar) {

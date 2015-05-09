@@ -3,6 +3,7 @@ package fr.jcgay.gradle.notifier.extension
 import fr.jcgay.gradle.notifier.time.Stopwatch
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
 import java.util.concurrent.TimeUnit
 
@@ -10,6 +11,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS
 
 @CompileStatic
 @EqualsAndHashCode
+@ToString
 class TimeThreshold implements Comparable<TimeThreshold> {
 
     Long time = -1

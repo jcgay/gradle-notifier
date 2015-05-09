@@ -1,5 +1,4 @@
 package fr.jcgay.gradle.notifier
-
 import fr.jcgay.gradle.notifier.extension.TimeThreshold
 import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Notification
@@ -7,6 +6,8 @@ import fr.jcgay.notification.Notifier
 import groovy.transform.CompileStatic
 import org.gradle.BuildAdapter
 import org.gradle.BuildResult
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 
 import static fr.jcgay.gradle.notifier.Status.FAILURE
 import static fr.jcgay.gradle.notifier.Status.SUCCESS
@@ -14,6 +15,8 @@ import static java.util.concurrent.TimeUnit.SECONDS
 
 @CompileStatic
 class NotifierListener extends BuildAdapter {
+
+    private static final Logger LOGGER = Logging.getLogger(NotifierListener)
 
     private final Notifier notifier
     private final Stopwatch timer
@@ -23,6 +26,7 @@ class NotifierListener extends BuildAdapter {
         this.threshold = threshold
         this.timer = timer
         this.notifier = notifier
+        LOGGER.debug("Will send notification with: {} if execution last more than {}", notifier, threshold)
         notifier.init()
     }
 
@@ -31,12 +35,12 @@ class NotifierListener extends BuildAdapter {
         try {
             if (TimeThreshold.of(timer) >= threshold) {
                 def status = status(result)
-                notifier.send(
-                    Notification.builder(result.gradle.rootProject.name, message(result), status.icon)
-                        .withSubtitle(status.message)
-                        .withLevel(status.level)
-                        .build()
-                )
+                def notification = Notification.builder(result.gradle.rootProject.name, message(result), status.icon)
+                    .withSubtitle(status.message)
+                    .withLevel(status.level)
+                    .build()
+                LOGGER.debug("Sending notification: {}", notification)
+                notifier.send(notification)
             }
         } finally {
             notifier.close()
