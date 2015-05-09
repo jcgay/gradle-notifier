@@ -39,6 +39,7 @@ dependencies {
     testCompile(group: 'com.netflix.nebula', name: 'nebula-test', version: '2.2.1') {
         exclude module: 'groovy-all'
     }
+    testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.9.0'
     testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.1'
 }
 
