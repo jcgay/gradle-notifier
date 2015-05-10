@@ -18,7 +18,7 @@ initscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.1'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.2'
     }
 }
 
@@ -38,7 +38,7 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.1'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.2'
     }
 }
 
@@ -100,6 +100,8 @@ notifier {
 
 All parameters are configured by default, if you're fine with it, no need to write them down.
 `Growl` is chosen for `OS X` and `Windows`, `notify-send` for `Linux`.
+
+Notifier configuration can also be set using system properties. One can use `-Dnotifier.implementation=anybar` or `-Dnotifier.anybar.port=9999` to override paramaters for a specific build execution.
 
 # Screenshots
 

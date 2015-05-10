@@ -20,7 +20,7 @@ apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 
 group = 'fr.jcgay'
-version = '0.2-SNAPSHOT'
+version = 0.2
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -112,6 +112,8 @@ if (project.hasProperty('ossrhUsername')) {
     }
 
     task release(dependsOn: ['build', 'uploadArchives']) << {
+        assert !(version as String).contains('SNAPSHOT') : "Project is a SNAPSHOT ($version). Cannot release"
+
         def grgit = org.ajoberstar.grgit.Grgit.open(project.file('.'))
         grgit.tag.add {
             name = "v$version"
