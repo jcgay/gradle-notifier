@@ -36,12 +36,8 @@ dependencies {
     compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.4'
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.1'
-    testCompile(group: 'org.spockframework', name:'spock-core', version: '1.0-groovy-2.3') {
-        exclude module: 'groovy-all'
-    }
-    testCompile(group: 'com.netflix.nebula', name: 'nebula-test', version: '2.2.1') {
-        exclude module: 'groovy-all'
-    }
+    testCompile group: 'org.spockframework', name:'spock-core', version: '1.0-groovy-2.3'
+    testCompile group: 'com.netflix.nebula', name: 'nebula-test', version: '2.2.1'
     testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.9.0'
     testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.1'
 }
