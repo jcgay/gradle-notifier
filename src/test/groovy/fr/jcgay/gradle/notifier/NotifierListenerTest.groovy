@@ -3,6 +3,7 @@ import fr.jcgay.gradle.notifier.extension.TimeThreshold
 import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Notification
 import fr.jcgay.notification.Notifier
+import fr.jcgay.notification.SendNotificationException
 import org.gradle.BuildResult
 import org.gradle.api.Project
 import org.gradle.api.invocation.Gradle
@@ -77,6 +78,42 @@ class NotifierListenerTest extends Specification {
 
         then:
         0 * notifier.send(_)
+    }
+
+    def "should fail silently when notifier initialization fails"() {
+        given:
+        def notifier = Mock(Notifier)
+
+        when:
+        new NotifierListener(notifier, anyStopwatch(), new TimeThreshold())
+
+        then:
+        1 * notifier.init() >> { throw new SendNotificationException('fail') }
+        noExceptionThrown()
+    }
+
+    def "should not try to send notification when notifier initialization has failed"() {
+        given:
+        def notifier = Mock(Notifier) {
+            init() >> { throw new SendNotificationException('init fail') }
+        }
+        def listener = new NotifierListener(notifier, anyStopwatch(), new TimeThreshold())
+
+        when:
+        listener.buildFinished(successBuild('build ok'))
+
+        then:
+        0 * notifier.send(_)
+        0 * notifier.close()
+    }
+
+    def "should fail silently when sending notification fails"() {
+        when:
+        listener.buildFinished(successBuild('success'))
+
+        then:
+        1 * notifier.send(_) >> { throw new SendNotificationException('fail') }
+        noExceptionThrown()
     }
 
     private static Stopwatch anyStopwatch() {
