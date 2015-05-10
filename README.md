@@ -101,6 +101,19 @@ notifier {
 All parameters are configured by default, if you're fine with it, no need to write them down.
 `Growl` is chosen for `OS X` and `Windows`, `notify-send` for `Linux`.
 
+# Screenshots
+
+![growl](http://jeanchristophegay.com/images/gradle.notifier.growl.thumbnail.png)
+![snarl](http://jeanchristophegay.com/images/gradle.notifier.snarl.png)
+![kdialog](http://jeanchristophegay.com/images/gradle.notifier.kdialog.png)
+![pushbullet](http://jeanchristophegay.com/images/gradle.notifier.pushbullet.thumbnail.png)
+![anybar](http://jeanchristophegay.com/images/gradle.notifier.anybar.thumbnail.png)
+![somebar](http://jeanchristophegay.com/images/gradle.notifier.somebar.png)
+![notify-send](http://jeanchristophegay.com/images/gradle.notifier.notifysend.png)
+![notification-center](http://jeanchristophegay.com/images/gradle.notifier.notificationcenter.thumbnail.png)
+![notifu](http://jeanchristophegay.com/images/gradle.notifier.notifu.png)
+
+
 # Build status
 [![Build Status](https://travis-ci.org/jcgay/gradle-notifier.svg?branch=master)](https://travis-ci.org/jcgay/gradle-notifier)
 [![Coverage Status](https://coveralls.io/repos/jcgay/gradle-notifier/badge.svg?branch=master)](https://coveralls.io/r/jcgay/gradle-notifier?branch=master)
