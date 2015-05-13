@@ -1,6 +1,7 @@
 package fr.jcgay.gradle.notifier
 import nebula.test.IntegrationSpec
 import org.gradle.api.logging.LogLevel
+import spock.lang.Unroll
 
 class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
 
@@ -8,7 +9,8 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         logLevel = LogLevel.DEBUG
     }
 
-    def "should send notification when build ends"() {
+    @Unroll
+    def "should send notification when build ends with Gradle #version"() {
         given:
         gradleVersion = version
 
