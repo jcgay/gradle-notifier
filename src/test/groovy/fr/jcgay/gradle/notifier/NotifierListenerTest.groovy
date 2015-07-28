@@ -26,26 +26,18 @@ class NotifierListenerTest extends Specification {
         listener = new NotifierListener(notifier, aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)), new TimeThreshold())
     }
 
-    def 'should init notifier when instantiating NotifierListener'() {
-        given:
-        def notifier = Mock(Notifier)
-
-        when:
-        new NotifierListener(notifier, anyStopwatch(), new TimeThreshold())
-
-        then:
-        1 * notifier.init()
-    }
-
     def 'should send a successful notification when build ends'() {
         when:
         listener.buildFinished(successBuild('project'))
 
         then:
         1 * notifier.send(
-            Notification.builder('project', 'Done in: 5 second(s).', SUCCESS.icon)
-                .withSubtitle('Success')
-                .withLevel(INFO)
+            Notification.builder()
+                .title('project')
+                .message('Done in: 5 second(s).')
+                .icon(SUCCESS.icon)
+                .subtitle('Success')
+                .level(INFO)
                 .build()
         )
         1 * notifier.close()
@@ -57,9 +49,12 @@ class NotifierListenerTest extends Specification {
 
         then:
         1 * notifier.send(
-            Notification.builder('project fail', 'exception message', FAILURE.icon)
-                .withSubtitle('Failure')
-                .withLevel(ERROR)
+            Notification.builder()
+                .title('project fail')
+                .message('exception message')
+                .icon(FAILURE.icon)
+                .subtitle('Failure')
+                .level(ERROR)
                 .build()
         )
         1 * notifier.close()
@@ -78,33 +73,6 @@ class NotifierListenerTest extends Specification {
 
         then:
         0 * notifier.send(_)
-    }
-
-    def "should fail silently when notifier initialization fails"() {
-        given:
-        def notifier = Mock(Notifier)
-
-        when:
-        new NotifierListener(notifier, anyStopwatch(), new TimeThreshold())
-
-        then:
-        1 * notifier.init() >> { throw new SendNotificationException('fail') }
-        noExceptionThrown()
-    }
-
-    def "should not try to send notification when notifier initialization has failed"() {
-        given:
-        def notifier = Mock(Notifier) {
-            init() >> { throw new SendNotificationException('init fail') }
-        }
-        def listener = new NotifierListener(notifier, anyStopwatch(), new TimeThreshold())
-
-        when:
-        listener.buildFinished(successBuild('build ok'))
-
-        then:
-        0 * notifier.send(_)
-        0 * notifier.close()
     }
 
     def "should fail silently when sending notification fails"() {

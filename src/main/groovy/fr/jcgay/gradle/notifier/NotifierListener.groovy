@@ -23,30 +23,24 @@ class NotifierListener extends BuildAdapter {
     private final Stopwatch timer
     private final TimeThreshold threshold
 
-    private boolean skipFutureCall
-
     NotifierListener(Notifier notifier, Stopwatch timer, TimeThreshold threshold) {
         this.threshold = threshold
         this.timer = timer
         this.notifier = notifier
-
         LOGGER.debug("Will send notification with: {} if execution last more than {}", notifier, threshold)
-        initNotifier(notifier)
     }
 
     @Override
     void buildFinished(BuildResult result) {
-        if (skipFutureCall) {
-            LOGGER.warn("Will not try to send notification as notifier initialization has failed.")
-            return;
-        }
-
         try {
             if (TimeThreshold.of(timer) >= threshold) {
                 def status = status(result)
-                def notification = Notification.builder(result.gradle.rootProject.name, message(result), status.icon)
-                    .withSubtitle(status.message)
-                    .withLevel(status.level)
+                def notification = Notification.builder()
+                    .title(result.gradle.rootProject.name)
+                    .message(message(result))
+                    .icon(status.icon)
+                    .subtitle(status.message)
+                    .level(status.level)
                     .build()
                 LOGGER.debug("Sending notification: {}", notification)
                 notifier.send(notification)
@@ -58,16 +52,6 @@ class NotifierListener extends BuildAdapter {
         }
     }
 
-    private void initNotifier(Notifier notifier) {
-        try {
-            notifier.init()
-        } catch (SendNotificationException e) {
-            skipFutureCall = true
-            LOGGER.warn('Error while trying to initialize notification.', e)
-        } finally {
-            notifier.close()
-        }
-    }
 
     private String message(BuildResult result) {
         hasSucceeded(result) ? "Done in: ${timer.elapsed(SECONDS)} second(s)."
