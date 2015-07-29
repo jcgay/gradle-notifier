@@ -55,7 +55,7 @@ class NotifierListener extends BuildAdapter {
 
     private String message(BuildResult result) {
         hasSucceeded(result) ? "Done in: ${timer.elapsed(SECONDS)} second(s)."
-            : result.failure.message
+            : result.failure.message?:'Build Failed.'
     }
 
     private static boolean hasSucceeded(BuildResult result) {

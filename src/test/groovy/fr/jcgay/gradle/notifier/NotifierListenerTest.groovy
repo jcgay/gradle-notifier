@@ -1,6 +1,5 @@
 package fr.jcgay.gradle.notifier
 import fr.jcgay.gradle.notifier.extension.TimeThreshold
-import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Notification
 import fr.jcgay.notification.Notifier
 import fr.jcgay.notification.SendNotificationException
@@ -60,6 +59,23 @@ class NotifierListenerTest extends Specification {
         1 * notifier.close()
     }
 
+    def "should send a failure notification with a default message when failure has no message"() {
+        when:
+        listener.buildFinished(failBuild('project fail', null))
+
+        then:
+        1 * notifier.send(
+            Notification.builder()
+                .title('project fail')
+                .message('Build Failed.')
+                .icon(FAILURE.icon)
+                .subtitle('Failure')
+                .level(ERROR)
+                .build()
+        )
+        1 * notifier.close()
+    }
+
     def 'should not send a notification when build exceed threshold'() {
         given:
         def listener = new NotifierListener(
@@ -84,9 +100,6 @@ class NotifierListenerTest extends Specification {
         noExceptionThrown()
     }
 
-    private static Stopwatch anyStopwatch() {
-        aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5))
-    }
 
     private BuildResult successBuild(String name) {
         new BuildResult(gradle(name), null)
