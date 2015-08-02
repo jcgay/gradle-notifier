@@ -91,6 +91,22 @@ class NotifierListenerTest extends Specification {
         0 * notifier.send(_)
     }
 
+    def 'should always send a notification when notifier is persistent'() {
+        given:
+        def listener = new NotifierListener(
+            notifier,
+            aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)),
+            new TimeThreshold(time: 10L, unit: SECONDS)
+        )
+
+        when:
+        listener.buildFinished(successBuild('project'))
+
+        then:
+        1 * notifier.isPersistent() >> true
+        1 * notifier.send(_)
+    }
+
     def "should fail silently when sending notification fails"() {
         when:
         listener.buildFinished(successBuild('success'))

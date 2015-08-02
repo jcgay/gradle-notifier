@@ -33,7 +33,7 @@ class NotifierListener extends BuildAdapter {
     @Override
     void buildFinished(BuildResult result) {
         try {
-            if (TimeThreshold.of(timer) >= threshold) {
+            if (TimeThreshold.of(timer) >= threshold || notifier.isPersistent()) {
                 def status = status(result)
                 def notification = Notification.builder()
                     .title(result.gradle.rootProject.name)
