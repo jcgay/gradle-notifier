@@ -1,12 +1,13 @@
 package fr.jcgay.gradle.notifier.extension
 
-import fr.jcgay.gradle.notifier.time.Stopwatch
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.gradle.util.Clock
 
 import java.util.concurrent.TimeUnit
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS
 import static java.util.concurrent.TimeUnit.NANOSECONDS
 
 @CompileStatic
@@ -31,7 +32,7 @@ class TimeThreshold implements Comparable<TimeThreshold> {
         return unit.toNanos(time) <=> o.unit.toNanos(o.time)
     }
 
-    static TimeThreshold of(Stopwatch stopwatch) {
-        new TimeThreshold(time: stopwatch.elapsed(NANOSECONDS), unit: NANOSECONDS)
+    static TimeThreshold of(Clock stopwatch) {
+        new TimeThreshold(time: stopwatch.timeInMs, unit: MILLISECONDS)
     }
 }

@@ -1,6 +1,5 @@
 package fr.jcgay.gradle.notifier
 import fr.jcgay.gradle.notifier.extension.TimeThreshold
-import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Notification
 import fr.jcgay.notification.Notifier
 import fr.jcgay.notification.SendNotificationException
@@ -9,10 +8,10 @@ import org.gradle.BuildAdapter
 import org.gradle.BuildResult
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.util.Clock
 
 import static fr.jcgay.gradle.notifier.Status.FAILURE
 import static fr.jcgay.gradle.notifier.Status.SUCCESS
-import static java.util.concurrent.TimeUnit.SECONDS
 
 @CompileStatic
 class NotifierListener extends BuildAdapter {
@@ -20,10 +19,10 @@ class NotifierListener extends BuildAdapter {
     private static final Logger LOGGER = Logging.getLogger(NotifierListener)
 
     private final Notifier notifier
-    private final Stopwatch timer
+    private final Clock timer
     private final TimeThreshold threshold
 
-    NotifierListener(Notifier notifier, Stopwatch timer, TimeThreshold threshold) {
+    NotifierListener(Notifier notifier, Clock timer, TimeThreshold threshold) {
         this.threshold = threshold
         this.timer = timer
         this.notifier = notifier
@@ -54,7 +53,7 @@ class NotifierListener extends BuildAdapter {
 
 
     private String message(BuildResult result) {
-        hasSucceeded(result) ? "Done in: ${timer.elapsed(SECONDS)} second(s)."
+        hasSucceeded(result) ? "Done in: ${timer.time}."
             : result.failure.message?:'Build Failed.'
     }
 

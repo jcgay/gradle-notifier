@@ -8,7 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.invocation.Gradle
 import spock.lang.Specification
 
-import static fr.jcgay.gradle.notifier.KnownElapsedTimeTicker.aStartedStopwatchWithElapsedTime
+import static org.gradle.util.KnownElapsedTimeClock.elapsedTimeClock
 import static fr.jcgay.gradle.notifier.Status.FAILURE
 import static fr.jcgay.gradle.notifier.Status.SUCCESS
 import static fr.jcgay.notification.Notification.Level.ERROR
@@ -22,7 +22,7 @@ class NotifierListenerTest extends Specification {
     NotifierListener listener
 
     def setup() {
-        listener = new NotifierListener(notifier, aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)), new TimeThreshold())
+        listener = new NotifierListener(notifier, elapsedTimeClock(SECONDS.toMillis(5)), new TimeThreshold())
     }
 
     def 'should send a successful notification when build ends'() {
@@ -33,7 +33,7 @@ class NotifierListenerTest extends Specification {
         1 * notifier.send(
             Notification.builder()
                 .title('project')
-                .message('Done in: 5 second(s).')
+                .message('Done in: 5.0 secs.')
                 .icon(SUCCESS.icon)
                 .subtitle('Success')
                 .level(INFO)
@@ -80,7 +80,7 @@ class NotifierListenerTest extends Specification {
         given:
         def listener = new NotifierListener(
             notifier,
-            aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)),
+            elapsedTimeClock(SECONDS.toMillis(5)),
             new TimeThreshold(time: 10L, unit: SECONDS)
         )
 
@@ -95,7 +95,7 @@ class NotifierListenerTest extends Specification {
         given:
         def listener = new NotifierListener(
             notifier,
-            aStartedStopwatchWithElapsedTime(SECONDS.toNanos(5)),
+            elapsedTimeClock(SECONDS.toMillis(5)),
             new TimeThreshold(time: 10L, unit: SECONDS)
         )
 
@@ -115,7 +115,6 @@ class NotifierListenerTest extends Specification {
         1 * notifier.send(_) >> { throw new SendNotificationException('fail') }
         noExceptionThrown()
     }
-
 
     private BuildResult successBuild(String name) {
         new BuildResult(gradle(name), null)

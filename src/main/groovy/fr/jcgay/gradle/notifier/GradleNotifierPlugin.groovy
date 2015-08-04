@@ -1,6 +1,5 @@
 package fr.jcgay.gradle.notifier
 import fr.jcgay.gradle.notifier.extension.Configuration
-import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Application
 import fr.jcgay.notification.Icon
 import fr.jcgay.notification.Notifier
@@ -12,6 +11,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.initialization.BuildRequestMetaData
+import org.gradle.util.Clock
 
 import javax.inject.Inject
 
@@ -22,26 +23,25 @@ class GradleNotifierPlugin implements Plugin<Project> {
     private static final Icon GRADLE_ICON = Icon.create(SendNotification.getResource("/GradleLogoReg.png"), 'gradle')
     private static final Application APPLICATION = Application.builder('application/x-vnd-gradle-inc.gradle', 'Gradle', GRADLE_ICON).build()
 
-    private final Stopwatch stopwatch
     private final SendNotification sendNotification
 
     @Inject
     GradleNotifierPlugin() {
-        this(Stopwatch.createStarted(), new SendNotification())
+        this(new SendNotification())
     }
 
-    GradleNotifierPlugin(Stopwatch stopwatch, SendNotification sendNotification) {
+    GradleNotifierPlugin(SendNotification sendNotification) {
         this.sendNotification = sendNotification
-        this.stopwatch = stopwatch
     }
 
     @Override
     void apply(Project project) {
         project.extensions.create('notifier', Configuration)
 
+
         project.afterEvaluate {
             Notifier notifier = createNotifier(project.notifier)
-            project.gradle.addBuildListener(new NotifierListener(notifier, stopwatch, project.notifier.threshold))
+            project.gradle.addBuildListener(new NotifierListener(notifier, clock(project), project.notifier.threshold))
         }
     }
 
@@ -64,6 +64,10 @@ class GradleNotifierPlugin implements Plugin<Project> {
         result << userConfig.asProperties()
         result << System.getProperties().findAll { (it.key as String).startsWith('notifier') }
         result
+    }
+
+    private static Clock clock(Project project) {
+        project.gradle.services.get(BuildRequestMetaData).buildTimeClock
     }
 }
 

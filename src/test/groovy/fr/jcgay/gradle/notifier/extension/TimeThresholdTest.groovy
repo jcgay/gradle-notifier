@@ -1,7 +1,8 @@
 package fr.jcgay.gradle.notifier.extension
+
 import spock.lang.Specification
 
-import static fr.jcgay.gradle.notifier.KnownElapsedTimeTicker.aStopWatchWithElapsedTime
+import static org.gradle.util.KnownElapsedTimeClock.elapsedTimeClock
 import static java.util.concurrent.TimeUnit.*
 
 class TimeThresholdTest extends Specification {
@@ -37,9 +38,9 @@ class TimeThresholdTest extends Specification {
 
     def 'should create from stopwath'() {
         when:
-        def result = TimeThreshold.of(aStopWatchWithElapsedTime(5))
+        def result = TimeThreshold.of(elapsedTimeClock(5))
 
         then:
-        result == new TimeThreshold(time: 5, unit: NANOSECONDS)
+        result == new TimeThreshold(time: 5, unit: MILLISECONDS)
     }
 }

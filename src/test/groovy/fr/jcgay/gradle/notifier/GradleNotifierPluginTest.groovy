@@ -1,6 +1,5 @@
 package fr.jcgay.gradle.notifier
 import fr.jcgay.gradle.notifier.extension.Configuration
-import fr.jcgay.gradle.notifier.time.Stopwatch
 import fr.jcgay.notification.Notifier
 import fr.jcgay.notification.SendNotification
 import fr.jcgay.notification.SendNotificationException
@@ -40,7 +39,7 @@ class GradleNotifierPluginTest extends PluginProjectSpec {
         sendNotification.initNotifier() >> { throw new SendNotificationException('fail') }
 
         and:
-        def plugin = new GradleNotifierPlugin(Stopwatch.createStarted(), sendNotification)
+        def plugin = new GradleNotifierPlugin(sendNotification)
 
         when:
         def result = plugin.createNotifier(new Configuration())
@@ -60,7 +59,7 @@ class GradleNotifierPluginTest extends PluginProjectSpec {
         sendNotification.initNotifier() >> notifier
 
         and:
-        def plugin = new GradleNotifierPlugin(Stopwatch.createStarted(), sendNotification)
+        def plugin = new GradleNotifierPlugin(sendNotification)
 
         when:
         def result = plugin.createNotifier(new Configuration())
