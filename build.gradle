@@ -11,6 +11,7 @@ buildscript {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
     }
 }
 
@@ -20,6 +21,7 @@ apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.bmuschko.nexus'
+apply plugin: 'io.codearte.nexus-staging'
 
 group = 'fr.jcgay'
 version = '0.3-SNAPSHOT'
@@ -87,6 +89,11 @@ if (project.hasProperty('nexusUsername')) {
             name = "v$version"
             message = "Release $name"
         }
+    }
+
+    release.doLast {
+        tasks.closeAndPromoteRepository.execute()
+        tasks.publishPlugins.execute()
     }
 }
 
