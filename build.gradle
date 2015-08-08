@@ -10,16 +10,16 @@ buildscript {
         classpath 'org.ajoberstar:gradle-git:1.2.0'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
     }
 }
 
 apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'signing'
 apply plugin: "com.gradle.plugin-publish"
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.bmuschko.nexus'
 
 group = 'fr.jcgay'
 version = '0.3-SNAPSHOT'
@@ -48,66 +48,32 @@ test {
     jvmArgs "-XX:MaxPermSize=256m"
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from groovydoc
-}
+if (project.hasProperty('nexusUsername')) {
+    modifyPom {
+        project {
+            name 'gradle-notifier'
+            packaging 'jar'
+            description 'A plugin to have desktop notification when a build ends'
+            url 'https://github.com/jcgay/gradle-notifier'
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
+            scm {
+                connection 'scm:git:git://github.com/jcgay/gradle-notifier.git'
+                developerConnection 'scm:git:git@github.com:jcgay/gradle-notifier.git'
+                url 'https://github.com/jcgay/gradle-notifier.git'
+            }
 
-artifacts {
-    archives jar
-    archives javadocJar
-    archives sourcesJar
-}
-
-if (project.hasProperty('ossrhUsername')) {
-    signing {
-        sign configurations.archives
-    }
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+            licenses {
+                license {
+                    name 'The MIT License'
+                    url 'http://opensource.org/licenses/MIT'
                 }
+            }
 
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
-
-                pom.project {
-                    name 'gradle-notifier'
-                    packaging 'jar'
-                    description 'A plugin to have desktop notification when a build ends'
-                    url 'https://github.com/jcgay/gradle-notifier'
-
-                    scm {
-                        connection 'scm:git:git://github.com/jcgay/gradle-notifier.git'
-                        developerConnection 'scm:git:git@github.com:jcgay/gradle-notifier.git'
-                        url 'https://github.com/jcgay/gradle-notifier.git'
-                    }
-
-                    licenses {
-                        license {
-                            name 'The MIT License'
-                            url 'http://opensource.org/licenses/MIT'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'jcgay'
-                            name 'Jean-Christophe Gay'
-                            email 'contact@jeanchristophegay.com'
-                        }
-                    }
+            developers {
+                developer {
+                    id 'jcgay'
+                    name 'Jean-Christophe Gay'
+                    email 'contact@jeanchristophegay.com'
                 }
             }
         }
