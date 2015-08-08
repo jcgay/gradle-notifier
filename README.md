@@ -20,7 +20,7 @@ initscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.2'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.3'
     }
 }
 
@@ -40,7 +40,7 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.2'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '0.3'
     }
 }
 
@@ -124,7 +124,11 @@ Notifier configuration can also be set using system properties. One can use `-Dn
 | **AnyBar** for [OS X](https://github.com/tonsky/AnyBar) and [Linux](https://github.com/limpbrains/somebar) | ![anybar](http://jeanchristophegay.com/images/gradle.notifier.anybar.thumbnail.png) |
 | **[Toaster](https://github.com/nels-o/toaster)** for Windows 8 | ![Toaster](http://jeanchristophegay.com/images/gradle.notifier.toaster.png) |
 
-
 # Build status
 [![Build Status](https://travis-ci.org/jcgay/gradle-notifier.svg?branch=master)](https://travis-ci.org/jcgay/gradle-notifier)
 [![Coverage Status](https://coveralls.io/repos/jcgay/gradle-notifier/badge.svg?branch=master)](https://coveralls.io/r/jcgay/gradle-notifier?branch=master)
+
+# Release
+
+1. Set version (non SNAPSHOT one)
+2. `./gradlew clean release`
