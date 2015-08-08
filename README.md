@@ -7,6 +7,8 @@ A notification is sent when a build ends indicating if the build has failed or s
 
 The plugin can be configured in an [initialization script](http://gradle.org/docs/current/userguide/init_scripts.html) or in the [build script](https://gradle.org/docs/current/userguide/plugins.html).
 
+It is also deployed on [https://plugins.gradle.org](https://plugins.gradle.org/plugin/fr.jcgay.gradle-notifier).
+
 ### Initialization script
 
 For example, create (or edit) `$HOME/.gradle/init.gradle` file:
@@ -93,27 +95,34 @@ notifier {
     	host = 'localhost'
     	port = 1738
     }
+    toaster {
+        path = 'toast'
+    }
 }
 ```
 
 `notifier.threshold` allows to bypass notification when the build ends before the configured threshold.
 
-All parameters are configured by default, if you're fine with it, no need to write them down.
-`Growl` is chosen for `OS X` and `Windows`, `notify-send` for `Linux`.
+All parameters are configured by default, if you're fine with it, no need to write them down.  
+`gradle-notifier` will try to find an available notifier on your system.
 
-Notifier configuration can also be set using system properties. One can use `-Dnotifier.implementation=anybar` or `-Dnotifier.anybar.port=9999` to override paramaters for a specific build execution.
+Notifier configuration can also be set using system properties. One can use `-Dnotifier.implementation=anybar` or `-Dnotifier.anybar.port=9999` to override parameters for a specific build execution.
 
-# Screenshots
+#Notifiers
 
-![growl](http://jeanchristophegay.com/images/gradle.notifier.growl.thumbnail.png)
-![snarl](http://jeanchristophegay.com/images/gradle.notifier.snarl.png)
-![kdialog](http://jeanchristophegay.com/images/gradle.notifier.kdialog.png)
-![pushbullet](http://jeanchristophegay.com/images/gradle.notifier.pushbullet.thumbnail.png)
-![anybar](http://jeanchristophegay.com/images/gradle.notifier.anybar.thumbnail.png)
-![somebar](http://jeanchristophegay.com/images/gradle.notifier.somebar.png)
-![notify-send](http://jeanchristophegay.com/images/gradle.notifier.notifysend.png)
-![notification-center](http://jeanchristophegay.com/images/gradle.notifier.notificationcenter.thumbnail.png)
-![notifu](http://jeanchristophegay.com/images/gradle.notifier.notifu.png)
+| Notifier | Screenshot |
+|:--------:|-----------------|
+| **Growl**, for [Windows](http://www.growlforwindows.com/gfw/) and [OS X](http://growl.info/).    | ![Growl](http://jeanchristophegay.com/images/gradle.notifier.growl.thumbnail.png) |
+| **[Snarl](http://snarl.fullphat.net/)**, for Windows | ![Snarl](http://jeanchristophegay.com/images/gradle.notifier.snarl.png) |
+| **[terminal-notifier](https://github.com/alloy/terminal-notifier)**, OS X | ![terminal-notifier](http://jeanchristophegay.com/images/gradle.notifier.notificationcenter.thumbnail.png) |
+| **notification center** OS X (since Mavericks) | ![notification-center](http://jeanchristophegay.com/images/notifier.simplenc.thumbnail.png) |
+| **notify-send** for Linux | ![notify-send](http://jeanchristophegay.com/images/gradle.notifier.notifysend.png) |
+| **SystemTray** since Java 6 | ![System Tray](http://jeanchristophegay.com/images/notifier.system.tray_.success.png) |
+| **[Pushbullet](https://www.pushbullet.com/)** | ![pushbullet](http://jeanchristophegay.com/images/gradle.notifier.pushbullet.thumbnail.png) |
+| **Kdialog** for KDE | ![Kdialog](http://jeanchristophegay.com/images/gradle.notifier.kdialog.png) |
+| **[notifu](http://www.paralint.com/projects/notifu/index.html)** for Windows | ![notifu](http://jeanchristophegay.com/images/gradle.notifier.notifu.png) |
+| **AnyBar** for [OS X](https://github.com/tonsky/AnyBar) and [Linux](https://github.com/limpbrains/somebar) | ![anybar](http://jeanchristophegay.com/images/gradle.notifier.anybar.thumbnail.png) |
+| **[Toaster](https://github.com/nels-o/toaster)** for Windows 8 | ![Toaster](http://jeanchristophegay.com/images/gradle.notifier.toaster.png) |
 
 
 # Build status
