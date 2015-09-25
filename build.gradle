@@ -41,7 +41,7 @@ dependencies {
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.1'
     testCompile group: 'org.spockframework', name:'spock-core', version: '1.0-groovy-2.3'
-    testCompile group: 'com.netflix.nebula', name: 'nebula-test', version: '2.2.2'
+    testCompile group: 'com.netflix.nebula', name: 'nebula-test', version: '3.1.0'
     testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.12.1'
     testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.1'
 }
