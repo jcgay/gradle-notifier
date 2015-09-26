@@ -68,6 +68,7 @@ notifier {
     snarl {
         host = 'localhost'
         port = 9887
+        appPassword = 's3cr3t'
     }
     pushbullet {
     	apikey = 'key123'
