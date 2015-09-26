@@ -7,11 +7,11 @@ buildscript {
     }
     dependencies {
         classpath "com.gradle.publish:plugin-publish-plugin:0.9.1"
-        classpath 'org.ajoberstar:gradle-git:1.2.0'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+        classpath "pl.allegro.tech.build:axion-release-plugin:1.3.2"
     }
 }
 
@@ -22,9 +22,19 @@ apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: 'io.codearte.nexus-staging'
+apply plugin: "pl.allegro.tech.build.axion-release"
 
 group = 'fr.jcgay'
-version = '0.4-SNAPSHOT'
+
+scmVersion {
+    tag {
+        prefix = 'v'
+        versionSeparator = ''
+        deserialize = { config, position, tagName -> if (tagName.count('.') == 1) "$tagName.0" - 'v' else tagName - 'v' }
+    }
+}
+
+project.version = scmVersion.version
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -50,50 +60,51 @@ test {
     jvmArgs "-XX:MaxPermSize=256m"
 }
 
-if (project.hasProperty('nexusUsername')) {
-    modifyPom {
-        project {
-            name 'gradle-notifier'
-            packaging 'jar'
-            description 'A plugin to have desktop notification when a build ends'
-            url 'https://github.com/jcgay/gradle-notifier'
+release.dependsOn build
 
-            scm {
-                connection 'scm:git:git://github.com/jcgay/gradle-notifier.git'
-                developerConnection 'scm:git:git@github.com:jcgay/gradle-notifier.git'
-                url 'https://github.com/jcgay/gradle-notifier.git'
-            }
+uploadArchives.doFirst {
+    if (!project.properties.keySet().containsAll('nexusUsername', 'nexusPassword')) {
+        throw new StopExecutionException("Nexus authentication is not correctly defined, set 'nexusUsername' and 'nexusPassword' properties")
+    }
+}
 
-            licenses {
-                license {
-                    name 'The MIT License'
-                    url 'http://opensource.org/licenses/MIT'
-                }
-            }
+publishPlugins.doFirst {
+    if (!project.properties.keySet().containsAll('gradle.publish.key', 'gradle.publish.secret')) {
+        throw new StopExecutionException("Gradle plugin portal credentials not correctly defined, set 'gradle.publish.secret' and 'gradle.publish.secret' properties")
+    }
+}
 
-            developers {
-                developer {
-                    id 'jcgay'
-                    name 'Jean-Christophe Gay'
-                    email 'contact@jeanchristophegay.com'
-                }
+task('publish', dependsOn: [uploadArchives, closeAndPromoteRepository, publishPlugins])
+closeAndPromoteRepository.mustRunAfter uploadArchives
+publishPlugins.mustRunAfter uploadArchives
+
+modifyPom {
+    project {
+        name 'gradle-notifier'
+        packaging 'jar'
+        description 'A plugin to have desktop notification when a build ends'
+        url 'https://github.com/jcgay/gradle-notifier'
+
+        scm {
+            connection 'scm:git:git://github.com/jcgay/gradle-notifier.git'
+            developerConnection 'scm:git:git@github.com:jcgay/gradle-notifier.git'
+            url 'https://github.com/jcgay/gradle-notifier.git'
+        }
+
+        licenses {
+            license {
+                name 'The MIT License'
+                url 'http://opensource.org/licenses/MIT'
             }
         }
-    }
 
-    task release(dependsOn: ['build', 'uploadArchives']) << {
-        assert !(version as String).contains('SNAPSHOT') : "Project is a SNAPSHOT ($version). Cannot release"
-
-        def grgit = org.ajoberstar.grgit.Grgit.open(project.file('.'))
-        grgit.tag.add {
-            name = "v$version"
-            message = "Release $name"
+        developers {
+            developer {
+                id 'jcgay'
+                name 'Jean-Christophe Gay'
+                email 'contact@jeanchristophegay.com'
+            }
         }
-    }
-
-    release.doLast {
-        tasks.closeAndPromoteRepository.execute()
-        tasks.publishPlugins.execute()
     }
 }
 

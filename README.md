@@ -128,7 +128,10 @@ Notifier configuration can also be set using system properties. One can use `-Dn
 [![Build Status](https://travis-ci.org/jcgay/gradle-notifier.svg?branch=master)](https://travis-ci.org/jcgay/gradle-notifier)
 [![Coverage Status](https://coveralls.io/repos/jcgay/gradle-notifier/badge.svg?branch=master)](https://coveralls.io/r/jcgay/gradle-notifier?branch=master)
 
+# Set next version
+
+    ./gradlew markNextVersion -Prelease.nextVersion=2.0.0
+
 # Release
 
-1. Set version (non SNAPSHOT one)
-2. `./gradlew clean release`
+    ./gradlew release && ./gradlew clean publish
