@@ -32,4 +32,53 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         where:
         version << ['2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7']
     }
+
+    @Unroll
+    def "should not send notification when build is using continuous feature with Gradle #version"() {
+        given:
+        gradleVersion = version
+
+        and:
+        buildFile << '''
+            apply plugin: 'fr.jcgay.gradle-notifier'
+
+            notifier {
+                implementation = 'unknown'
+            }
+        '''.stripIndent()
+
+        when:
+        def result = runTasksSuccessfully('tasks', '--continuous')
+
+        then:
+        !result.standardOutput.contains('Sending notification:')
+
+        where:
+        version << ['2.5', '2.6', '2.7']
+    }
+
+    @Unroll
+    def "should send notification when build is using continuous feature with parameter and Gradle #version"() {
+        given:
+        gradleVersion = version
+
+        and:
+        buildFile << '''
+            apply plugin: 'fr.jcgay.gradle-notifier'
+
+            notifier {
+                implementation = 'unknown'
+                continuousNotify = true
+            }
+        '''.stripIndent()
+
+        when:
+        def result = runTasksSuccessfully('tasks', '--continuous')
+
+        then:
+        result.standardOutput.contains('Sending notification:')
+
+        where:
+        version << ['2.5', '2.6', '2.7']
+    }
 }

@@ -38,10 +38,11 @@ class GradleNotifierPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.extensions.create('notifier', Configuration)
 
-
         project.afterEvaluate {
-            Notifier notifier = createNotifier(project.notifier)
-            project.gradle.addBuildListener(new NotifierListener(notifier, clock(project), project.notifier.threshold))
+            if (gradleVersion(project) < 2.5 || hasContinuousNotification(project)) {
+                Notifier notifier = createNotifier(project.notifier)
+                project.gradle.addBuildListener(new NotifierListener(notifier, clock(project), project.notifier.threshold))
+            }
         }
     }
 
@@ -68,6 +69,17 @@ class GradleNotifierPlugin implements Plugin<Project> {
 
     private static Clock clock(Project project) {
         project.gradle.services.get(BuildRequestMetaData).buildTimeClock
+    }
+
+    private static Float gradleVersion(Project project) {
+        project.gradle.gradleVersion as Float
+    }
+
+    private static boolean hasContinuousNotification(Project project) {
+        if (project.gradle.startParameter.isContinuous()) {
+            return project.notifier.continuousNotify
+        }
+        true
     }
 }
 

@@ -5,6 +5,7 @@ import static org.gradle.util.ConfigureUtil.configure
 class Configuration {
 
     String implementation
+    boolean continuousNotify
 
     Growl growl = new Growl()
     Snarl snarl = new Snarl()
