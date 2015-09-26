@@ -16,6 +16,7 @@ class Configuration {
     Kdialog kdialog = new Kdialog()
     AnyBar anyBar = new AnyBar()
     TimeThreshold threshold = new TimeThreshold()
+    Toaster toaster = new Toaster()
 
     static Properties createProperties(Map properties, String parentKey) {
         def result = new Properties()
@@ -67,14 +68,18 @@ class Configuration {
         configure(closure, threshold)
     }
 
+    void toaster(Closure closure) {
+        configure(closure, toaster)
+    }
+
     Properties asProperties() {
         def result = new Properties()
         if (implementation) {
             result << ['notifier.implementation':implementation]
         }
 
-        [growl, snarl, pushbullet, notifySend, notificationCenter, systemTray, notifu, kdialog, anyBar].each {
-            result << it.asProperties('notifier')
+        [growl, snarl, pushbullet, notifySend, notificationCenter, systemTray, notifu, kdialog, anyBar, toaster].each {
+            result << it.asProperties('notifier').findAll { !it.key.endsWith('.class') }
         }
 
         result

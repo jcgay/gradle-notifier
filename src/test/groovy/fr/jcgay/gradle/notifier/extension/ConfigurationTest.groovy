@@ -19,6 +19,7 @@ class ConfigurationTest extends Specification {
         configuration.pushbullet.apikey = 'abcd'
         configuration.snarl.port = 3
         configuration.systemTray.wait = 4
+        configuration.toaster.path = 'toaster'
 
         when:
         def result = configuration.asProperties()
@@ -35,6 +36,9 @@ class ConfigurationTest extends Specification {
             .containsEntry('notifier.pushbullet.apikey', 'abcd')
             .containsEntry('notifier.snarl.port', 3)
             .containsEntry('notifier.system-tray.wait', 4)
+            .containsEntry('notifier.toaster.bin', 'toaster')
+
+        result.keySet().findAll { it.endsWith('.class') }.isEmpty()
     }
 
     def 'should not fail when configuration is not set'() {
