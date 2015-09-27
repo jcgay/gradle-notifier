@@ -1,3 +1,11 @@
+#0.4
+***
+
+- Skip notification with continuous build ([142fac6](http://github.com/jcgay/gradle-notifier/commit/142fac6a1aee743e4edd1f084e2229df40a4cc39))
+- Add missing Toaster extension ([4326df3](http://github.com/jcgay/gradle-notifier/commit/4326df326088dfd05d6152e27bbf10bb08e8d245))
+- Can build multiple projects at the same time with Snarl ([688e701](http://github.com/jcgay/gradle-notifier/commit/688e7019805cc5f3c953a1d5a56c0a9fc6e3b433))
+- Upgrade to Gradle 2.7 ([945fb1d](http://github.com/jcgay/gradle-notifier/commit/945fb1db398b89e0ecef73b8fec14b45aaa48117))
+
 #0.3
 ***
 
