@@ -47,7 +47,7 @@ dependencies {
     compile gradleApi()
     compile localGroovy()
 
-    compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.9'
+    compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.10.1'
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.1'
     testCompile(group: 'org.spockframework', name:'spock-core', version: '1.0-groovy-2.4') {
