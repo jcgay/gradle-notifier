@@ -13,6 +13,7 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.initialization.BuildRequestMetaData
 import org.gradle.util.Clock
+import org.gradle.util.GradleVersion
 
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class GradleNotifierPlugin implements Plugin<Project> {
         project.extensions.create('notifier', Configuration)
 
         project.afterEvaluate {
-            if (gradleVersion(project) < 2.5 || hasContinuousNotification(project)) {
+            if (gradleVersion(project) < GradleVersion.version('2.5') || hasContinuousNotification(project)) {
                 Notifier notifier = createNotifier(project.notifier)
                 project.gradle.addBuildListener(new NotifierListener(notifier, clock(project), project.notifier.threshold))
             }
@@ -71,8 +72,8 @@ class GradleNotifierPlugin implements Plugin<Project> {
         project.gradle.services.get(BuildRequestMetaData).buildTimeClock
     }
 
-    private static Float gradleVersion(Project project) {
-        project.gradle.gradleVersion as Float
+    private static GradleVersion gradleVersion(Project project) {
+        GradleVersion.version(project.gradle.gradleVersion)
     }
 
     private static boolean hasContinuousNotification(Project project) {
