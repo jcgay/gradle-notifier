@@ -135,7 +135,7 @@ Notifier configuration can also be set using system properties. One can use `-Dn
 
 ##Set next version
 
-    ./gradlew markNextVersion -Prelease.nextVersion=2.0.0
+    ./gradlew markNextVersion -Prelease.version=2.0.0
 
 ##Release
 
