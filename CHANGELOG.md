@@ -1,3 +1,12 @@
+#1.0.0
+***
+
+- Upgrade to Gradle 2.13 ([2b93575](http://github.com/jcgay/gradle-notifier/commit/2b93575f5d8c904b20c224e48898666f3eae0e62))
+- Use newer Gradle logo (the elephant) ([666ea5b](http://github.com/jcgay/gradle-notifier/commit/666ea5b25cc0be1195b0b4e54273b0011e572891))
+- Use send-notification 0.10.1 ([0456409](http://github.com/jcgay/gradle-notifier/commit/0456409a95eeb2da34bacda2c29d53fe6407039f))
+    - Prevent dock icon creation on OS X ([f7ba636](http://github.com/jcgay/send-notification/commit/f7ba63631fe6e1c9f2bbad126164eeca1cf2d7b5))
+    - Escape argument when executing notifu ([41358dd](http://github.com/jcgay/send-notification/commit/41358ddc20125d35996ebba5545c00e2b66ff31f))
+
 #0.4
 ***
 
