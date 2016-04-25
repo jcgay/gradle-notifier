@@ -12,6 +12,7 @@ buildscript {
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
         classpath "pl.allegro.tech.build:axion-release-plugin:1.3.4"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
     }
 }
 
@@ -23,6 +24,7 @@ apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: 'io.codearte.nexus-staging'
 apply plugin: "pl.allegro.tech.build.axion-release"
+apply plugin: 'com.jfrog.bintray'
 
 group = 'fr.jcgay'
 
@@ -76,9 +78,16 @@ publishPlugins.doFirst {
     }
 }
 
-task('publish', dependsOn: [uploadArchives, closeAndPromoteRepository, publishPlugins])
+bintrayUpload.doFirst {
+    if (!project.properties.keySet().containsAll('bintrayUsername', 'bintrayKey')) {
+        throw new StopExecutionException("Bintray credentials not correctly defined, set 'bintrayUsername' and 'bintrayKey' properties")
+    }
+}
+
+task('publish', dependsOn: [uploadArchives, closeAndPromoteRepository, publishPlugins, bintrayUpload])
 closeAndPromoteRepository.mustRunAfter uploadArchives
 publishPlugins.mustRunAfter uploadArchives
+bintrayUpload.mustRunAfter uploadArchives
 
 modifyPom {
     project {
@@ -128,5 +137,23 @@ jacocoTestReport {
     reports {
         xml.enabled = true
         html.enabled = true
+    }
+}
+
+bintray {
+    user = project.properties['bintrayUsername']
+    key = project.properties['bintrayKey']
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'gradle-notifier'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/jcgay/gradle-notifier.git'
+        version {
+            name = project.version
+            desc = "Gradle Notifier ${project.version}"
+            released  = new Date()
+            vcsTag = "v${project.version}"
+        }
     }
 }
