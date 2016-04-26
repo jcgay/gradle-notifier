@@ -1,3 +1,8 @@
+#1.0.1
+***
+
+- Use (new) plugin mechanism when applicable ([20ec9ea](http://github.com/jcgay/gradle-notifier/commit/20ec9eadf9867a46a5b6c84da0df74d1366a1d0d))
+
 #1.0.0
 ***
 
