@@ -53,7 +53,7 @@ dependencies {
     testCompile(group: 'org.spockframework', name:'spock-core', version: '1.0-groovy-2.4') {
         exclude group:'org.codehaus.groovy'
     }
-    testCompile group: 'com.netflix.nebula', name: 'nebula-test', version: '4.0.0'
+    testCompile group: 'com.netflix.nebula', name: 'nebula-test', version: '4.2.2'
     testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.16.0'
     testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.1'
 }
