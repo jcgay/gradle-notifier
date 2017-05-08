@@ -111,7 +111,7 @@ All parameters are configured by default, if you're fine with it, no need to wri
 
 Notifier configuration can also be set using system properties. One can use `-Dnotifier.implementation=anybar` or `-Dnotifier.anybar.port=9999` to override parameters for a specific build execution.
 
-#Notifiers
+# Notifiers
 
 | Notifier | Screenshot |
 |:--------:|-----------------|
@@ -127,16 +127,16 @@ Notifier configuration can also be set using system properties. One can use `-Dn
 | **AnyBar** for [OS X](https://github.com/tonsky/AnyBar) and [Linux](https://github.com/limpbrains/somebar) | ![anybar](http://jeanchristophegay.com/images/gradle.notifier.anybar.thumbnail.png) |
 | **[Toaster](https://github.com/nels-o/toaster)** for Windows 8 | ![Toaster](http://jeanchristophegay.com/images/gradle.notifier.toaster.png) |
 
-#Build
+# Build
 
-##Status
+## Status
 [![Build Status](https://travis-ci.org/jcgay/gradle-notifier.svg?branch=master)](https://travis-ci.org/jcgay/gradle-notifier)
 [![Coverage Status](https://coveralls.io/repos/jcgay/gradle-notifier/badge.svg?branch=master)](https://coveralls.io/r/jcgay/gradle-notifier?branch=master)
 
-##Set next version
+## Set next version
 
     ./gradlew markNextVersion -Prelease.version=2.0.0
 
-##Release
+## Release
 
     ./gradlew release && ./gradlew clean publish
