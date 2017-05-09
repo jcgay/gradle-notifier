@@ -5,6 +5,11 @@ import groovy.transform.CompileStatic
 class KnownElapsedTimeClock {
 
     static Clock elapsedTimeClock(long elapsedTimeMs) {
-        new Clock({ elapsedTimeMs }, 0)
+        new Clock(0) {
+            @Override
+            long getElapsedMillis() {
+                return elapsedTimeMs
+            }
+        }
     }
 }
