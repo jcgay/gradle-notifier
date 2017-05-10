@@ -18,6 +18,9 @@ class Configuration {
     AnyBar anyBar = new AnyBar()
     TimeThreshold threshold = new TimeThreshold()
     Toaster toaster = new Toaster()
+    Notify notify = new Notify()
+    BurntToast burnttoast = new BurntToast()
+    Slack slack = new Slack()
 
     static Properties createProperties(Map properties, String parentKey) {
         def result = new Properties()
@@ -73,13 +76,25 @@ class Configuration {
         configure(closure, toaster)
     }
 
+    void notify(Closure closure) {
+        configure(closure, notify)
+    }
+
+    void burnttoast(Closure closure) {
+        configure(closure, burnttoast)
+    }
+
+    void slack(Closure closure) {
+        configure(closure, slack)
+    }
+
     Properties asProperties() {
         def result = new Properties()
         if (implementation) {
             result << ['notifier.implementation':implementation]
         }
 
-        [growl, snarl, pushbullet, notifySend, notificationCenter, systemTray, notifu, kdialog, anyBar, toaster].each {
+        [growl, snarl, pushbullet, notifySend, notificationCenter, systemTray, notifu, kdialog, anyBar, toaster, notify, burnttoast, slack].each {
             result << it.asProperties('notifier').findAll { !it.key.endsWith('.class') }
         }
 

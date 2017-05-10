@@ -100,6 +100,17 @@ notifier {
     toaster {
         path = 'toast'
     }
+    notify {
+        position = 'TOP_LEFT'
+        darkstyle = true
+    }
+    burnttoast {
+        sound = 'Reminder'
+    }
+    slack {
+        token = 'secret.token'
+        channel = '@jcgay'
+    }
 }
 ```
 
@@ -126,6 +137,9 @@ Notifier configuration can also be set using system properties. One can use `-Dn
 | **[notifu](http://www.paralint.com/projects/notifu/index.html)** for Windows | ![notifu](http://jeanchristophegay.com/images/gradle.notifier.notifu.png) |
 | **AnyBar** for [OS X](https://github.com/tonsky/AnyBar) and [Linux](https://github.com/limpbrains/somebar) | ![anybar](http://jeanchristophegay.com/images/gradle.notifier.anybar.thumbnail.png) |
 | **[Toaster](https://github.com/nels-o/toaster)** for Windows 8 | ![Toaster](http://jeanchristophegay.com/images/gradle.notifier.toaster.png) |
+| **[Notify](https://github.com/dorkbox/Notify)** since Java 6 | ![Notify](http://jeanchristophegay.com/images/notifier.notify.png) |
+| **[BurntToast](https://github.com/Windos/BurntToast)** for Windows 10 | ![BurntToast](http://jeanchristophegay.com/images/notifier.burnttoast.png) |
+| **[Slack](https://slack.com)** | ![Slack](http://jeanchristophegay.com/images/slack-success.png) |
 
 # Build
 

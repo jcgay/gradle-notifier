@@ -20,6 +20,9 @@ class ConfigurationTest extends Specification {
         configuration.snarl.port = 3
         configuration.systemTray.wait = 4
         configuration.toaster.path = 'toaster'
+        configuration.notify.darkstyle = true
+        configuration.burnttoast.sound = 'Reminder'
+        configuration.slack.token = 'secret.token'
 
         when:
         def result = configuration.asProperties()
@@ -37,6 +40,9 @@ class ConfigurationTest extends Specification {
             .containsEntry('notifier.snarl.port', 3)
             .containsEntry('notifier.system-tray.wait', 4)
             .containsEntry('notifier.toaster.bin', 'toaster')
+            .containsEntry('notifier.notify.darkstyle', true)
+            .containsEntry('notifier.burnttoast.sound', 'Reminder')
+            .containsEntry('notifier.slack.token', 'secret.token')
 
         result.keySet().findAll { it.endsWith('.class') }.isEmpty()
     }
