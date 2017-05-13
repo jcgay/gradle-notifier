@@ -69,8 +69,8 @@ bintrayUpload.doFirst {
     }
 }
 
-task('publish', dependsOn: [uploadArchives, closeAndPromoteRepository, publishPlugins, bintrayUpload])
-closeAndPromoteRepository.mustRunAfter uploadArchives
+task('publish', dependsOn: [uploadArchives, closeAndReleaseRepository, publishPlugins, bintrayUpload])
+closeAndReleaseRepository.mustRunAfter uploadArchives
 publishPlugins.mustRunAfter uploadArchives
 bintrayUpload.mustRunAfter uploadArchives
 
