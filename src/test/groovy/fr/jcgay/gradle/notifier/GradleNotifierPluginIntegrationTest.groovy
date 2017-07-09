@@ -30,7 +30,7 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         result.standardOutput.contains('Sending notification:')
 
         where:
-        version << ['2.8', '3.1', '3.5']
+        version << ['2.8', '3.1', '3.5', '4.0.1']
     }
 
     @Unroll
@@ -54,7 +54,7 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         !result.standardOutput.contains('Sending notification:')
 
         where:
-        version << ['2.8', '3.1', '3.5']
+        version << ['2.8', '3.1', '3.5', '4.0.1']
     }
 
     @Unroll
@@ -79,6 +79,6 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         result.standardOutput.contains('Sending notification:')
 
         where:
-        version << ['2.8', '3.1', '3.5']
+        version << ['2.8', '3.1', '3.5', '4.0.1']
     }
 }
