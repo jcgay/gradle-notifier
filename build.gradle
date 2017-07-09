@@ -2,9 +2,9 @@ plugins {
     id "com.gradle.plugin-publish" version "0.9.4"
     id 'com.github.kt3k.coveralls' version '2.8.1'
     id "com.bmuschko.nexus" version "2.3.1"
-    id "pl.allegro.tech.build.axion-release" version "1.6.0"
+    id "pl.allegro.tech.build.axion-release" version "1.7.1"
     id "com.jfrog.bintray" version "1.7.3"
-    id 'com.github.ben-manes.versions' version '0.14.0'
+    id 'com.github.ben-manes.versions' version '0.15.0'
     id "io.codearte.nexus-staging" version "0.8.0"
 }
 
@@ -34,7 +34,7 @@ dependencies {
     compile gradleApi()
     compile localGroovy()
 
-    compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.11.0'
+    compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.12.0'
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.1'
     testCompile(group: 'org.spockframework', name:'spock-core', version: '1.1-groovy-2.4') {
