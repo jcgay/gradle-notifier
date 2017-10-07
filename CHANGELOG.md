@@ -1,3 +1,12 @@
+# 1.2.0
+***
+
+- Use Oracle JDK 8 on Travis CI ([1df51c5](http://github.com/jcgay/gradle-notifier/commit/1df51c54c10e5564da516318f5a063738474534a))
+- Upgrade to Gradle 4.1 ([f6858a4](http://github.com/jcgay/gradle-notifier/commit/f6858a4cd75a15936021f8eb3e1a1617c2095768))
+- Use send-notification 0.13.0 ([9685bcb](http://github.com/jcgay/gradle-notifier/commit/9685bcb60bafab217e9d12df87828b2a3fc3d87b))
+- Upgrade to Gradle 4.0.1 ([7d5f82b](http://github.com/jcgay/gradle-notifier/commit/7d5f82b54588b2fec9ddb449ef13de48324278d2))
+- Use closeAndReleaseRepository task instead of deprecated closeAndPromoteRepository ([6885d01](http://github.com/jcgay/gradle-notifier/commit/6885d01b57dbbea44d3f47dc6874a4b19e182476))
+
 # 1.1.0
 ***
 
