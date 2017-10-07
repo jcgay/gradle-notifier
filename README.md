@@ -3,6 +3,11 @@
 Desktop notifications for [Gradle](http://gradle.org).  
 A notification is sent when a build ends indicating if the build has failed or succeeded.
 
+## Compatibility
+
+Gradle < 4.2 : Use gradle-notifier v1.2.0  
+Gradle >= 4.2 : Use gradle-notifier v2.0.0
+
 ## Installation
 
 The plugin can be configured in an [initialization script](http://gradle.org/docs/current/userguide/init_scripts.html) or in the [build script](https://gradle.org/docs/current/userguide/plugins.html).

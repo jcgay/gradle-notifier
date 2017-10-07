@@ -1,9 +1,9 @@
 package fr.jcgay.gradle.notifier.extension
 
+import fr.jcgay.gradle.notifier.Clock
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import org.gradle.util.Clock
 
 import java.util.concurrent.TimeUnit
 

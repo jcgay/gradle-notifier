@@ -8,7 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.invocation.Gradle
 import spock.lang.Specification
 
-import static org.gradle.util.KnownElapsedTimeClock.elapsedTimeClock
+import static KnownElapsedTimeClock.elapsedTimeClock
 import static fr.jcgay.gradle.notifier.Status.FAILURE
 import static fr.jcgay.gradle.notifier.Status.SUCCESS
 import static fr.jcgay.notification.Notification.Level.ERROR
@@ -33,7 +33,7 @@ class NotifierListenerTest extends Specification {
         1 * notifier.send(
             Notification.builder()
                 .title('project')
-                .message('Done in: 5.0 secs.')
+                .message('Done in: 5 secs.')
                 .icon(SUCCESS.icon)
                 .subtitle('Success')
                 .level(INFO)

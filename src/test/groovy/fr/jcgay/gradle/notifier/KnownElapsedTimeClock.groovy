@@ -1,13 +1,13 @@
-package org.gradle.util
+package fr.jcgay.gradle.notifier
 import groovy.transform.CompileStatic
 
 @CompileStatic
 class KnownElapsedTimeClock {
 
     static Clock elapsedTimeClock(long elapsedTimeMs) {
-        new Clock(0) {
+        new Clock() {
             @Override
-            long getElapsedMillis() {
+            long getTimeInMs() {
                 return elapsedTimeMs
             }
         }

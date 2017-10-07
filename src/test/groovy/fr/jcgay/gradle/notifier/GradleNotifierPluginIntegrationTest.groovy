@@ -5,6 +5,8 @@ import spock.lang.Unroll
 
 class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
 
+    static def versions = ['4.2.1']
+
     void setup() {
         logLevel = LogLevel.DEBUG
     }
@@ -30,7 +32,7 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         result.standardOutput.contains('Sending notification:')
 
         where:
-        version << ['2.8', '3.1', '3.5', '4.0.1', '4.1']
+        version << versions
     }
 
     @Unroll
@@ -54,7 +56,7 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         !result.standardOutput.contains('Sending notification:')
 
         where:
-        version << ['2.8', '3.1', '3.5', '4.0.1', '4.1']
+        version << versions
     }
 
     @Unroll
@@ -79,6 +81,6 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         result.standardOutput.contains('Sending notification:')
 
         where:
-        version << ['2.8', '3.1', '3.5', '4.0.1', '4.1']
+        version << versions
     }
 }

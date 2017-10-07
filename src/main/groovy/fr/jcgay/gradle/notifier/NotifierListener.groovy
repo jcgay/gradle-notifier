@@ -8,7 +8,6 @@ import org.gradle.BuildAdapter
 import org.gradle.BuildResult
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
-import org.gradle.util.Clock
 
 import static fr.jcgay.gradle.notifier.Status.FAILURE
 import static fr.jcgay.gradle.notifier.Status.SUCCESS

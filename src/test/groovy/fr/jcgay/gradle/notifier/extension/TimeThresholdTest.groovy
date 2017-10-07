@@ -2,7 +2,7 @@ package fr.jcgay.gradle.notifier.extension
 
 import spock.lang.Specification
 
-import static org.gradle.util.KnownElapsedTimeClock.elapsedTimeClock
+import static fr.jcgay.gradle.notifier.KnownElapsedTimeClock.elapsedTimeClock
 import static java.util.concurrent.TimeUnit.*
 
 class TimeThresholdTest extends Specification {

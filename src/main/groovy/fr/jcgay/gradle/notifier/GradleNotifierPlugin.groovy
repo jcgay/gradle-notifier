@@ -1,10 +1,7 @@
 package fr.jcgay.gradle.notifier
+
 import fr.jcgay.gradle.notifier.extension.Configuration
-import fr.jcgay.notification.Application
-import fr.jcgay.notification.Icon
-import fr.jcgay.notification.Notifier
-import fr.jcgay.notification.SendNotification
-import fr.jcgay.notification.SendNotificationException
+import fr.jcgay.notification.*
 import fr.jcgay.notification.notifier.DoNothingNotifier
 import groovy.transform.PackageScope
 import org.gradle.api.Plugin
@@ -12,7 +9,6 @@ import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.initialization.BuildRequestMetaData
-import org.gradle.util.Clock
 import org.gradle.util.GradleVersion
 
 import javax.inject.Inject
@@ -40,7 +36,7 @@ class GradleNotifierPlugin implements Plugin<Project> {
         project.extensions.create('notifier', Configuration)
 
         project.afterEvaluate {
-            if (gradleVersion(project) < GradleVersion.version('2.5') || hasContinuousNotification(project)) {
+            if (shouldNotify(project)) {
                 Notifier notifier = createNotifier(project.notifier)
                 project.gradle.addBuildListener(new NotifierListener(notifier, clock(project), project.notifier.threshold))
             }
@@ -69,14 +65,14 @@ class GradleNotifierPlugin implements Plugin<Project> {
     }
 
     private static Clock clock(Project project) {
-        project.gradle.services.get(BuildRequestMetaData).buildTimeClock
+        new Clock(startTime: project.gradle.services.get(BuildRequestMetaData).startTime)
     }
 
     private static GradleVersion gradleVersion(Project project) {
         GradleVersion.version(project.gradle.gradleVersion)
     }
 
-    private static boolean hasContinuousNotification(Project project) {
+    private static boolean shouldNotify(Project project) {
         if (project.gradle.startParameter.isContinuous()) {
             return project.notifier.continuousNotify
         }
