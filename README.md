@@ -5,8 +5,8 @@ A notification is sent when a build ends indicating if the build has failed or s
 
 ## Compatibility
 
-Gradle < 4.2 : Use gradle-notifier v1.2.0  
-Gradle >= 4.2 : Use gradle-notifier v2.0.0
+Gradle < 4.2 : Use gradle-notifier [v1.2.0](https://github.com/jcgay/gradle-notifier/tree/v1.2.0)  
+Gradle >= 4.2 : Use gradle-notifier v2.0.0+
 
 ## Installation
 
@@ -25,7 +25,7 @@ initscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '1.2.0'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.0.0'
     }
 }
 
@@ -45,7 +45,7 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '1.2.0'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.0.0'
     }
 }
 

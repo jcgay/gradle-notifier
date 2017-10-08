@@ -1,3 +1,9 @@
+# 2.0.0
+***
+
+- Upgrade to Gradle 4.2.1 ([5828feb](http://github.com/jcgay/gradle-notifier/commit/5828feb0c0a5c6ce7543b04ee5d88162b586b11d))
+- Replace deprecated BuildRequestMetaData#getBuildTimeClock ([33bb8df](http://github.com/jcgay/gradle-notifier/commit/33bb8df76aebee38163f35d00e4117be52350d7c)) - Fix [Issue#6](https://github.com/jcgay/gradle-notifier/issues/6)
+
 # 1.2.0
 ***
 
