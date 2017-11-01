@@ -1,3 +1,13 @@
+# 2.1.0
+***
+
+- Can configure notification timeout ([c5440aa](http://github.com/jcgay/gradle-notifier/commit/c5440aa06026d093c9d7ed5062eeb1b12d495918))
+- Use send-notification 0.14.0 ([31b2068](http://github.com/jcgay/gradle-notifier/commit/31b20682406d4aab4fd93bb4bb37d20df0d6d6f2))
+    - Default RuntimeExecutor timeout is now 500 ms ([8d792b5](http://github.com/jcgay/send-notification/commit/8d792b5642264403b9072f61cd2c2d8d4e642598))
+    - Timeout in RuntimeExecutor is now set from Application configuration ([9d0fb02](http://github.com/jcgay/send-notification/commit/9d0fb0226df88cba08a9549f4ded2150052b3134))
+    - Do not set a default app activation for terminal-notifier ([61f142f](http://github.com/jcgay/send-notification/commit/61f142f0940542117a3494e034bb723797337faf))
+- Upgrade to Gradle 4.3 ([15e915c](http://github.com/jcgay/gradle-notifier/commit/15e915c57d2a7d27b10667d383926d56a8ab7c92))
+
 # 2.0.0
 ***
 

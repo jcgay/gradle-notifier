@@ -25,7 +25,7 @@ initscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.0.0'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.1.0'
     }
 }
 
@@ -45,7 +45,7 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.0.0'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.1.0'
     }
 }
 
@@ -124,7 +124,7 @@ notifier {
 ```
 
 `notifier.threshold` allows to bypass notification when the build ends before the configured threshold.  
-`notifier.continuousNotify` activate notifications for continuous build (using `--continuous` or `-t`).
+`notifier.continuousNotify` activate notifications for continuous build (using `--continuous` or `-t`).  
 `notifier.timeout` configures the time Gradle will wait to communicate with a notifier.
 
 All parameters are configured by default, if you're fine with it, no need to write them down.  
