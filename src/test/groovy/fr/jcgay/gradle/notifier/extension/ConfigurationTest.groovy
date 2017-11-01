@@ -68,4 +68,18 @@ class ConfigurationTest extends Specification {
         then:
         configuration.threshold == new TimeThreshold(time: 3, unit: SECONDS)
     }
+
+    def 'should set timeout'() {
+        given:
+        def configuration = new Configuration()
+
+        when:
+        configuration.timeout {
+            time = 3
+            unit = SECONDS
+        }
+
+        then:
+        configuration.timeout == new Timeout(time: 3, unit: SECONDS)
+    }
 }

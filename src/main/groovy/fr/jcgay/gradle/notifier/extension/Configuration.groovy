@@ -21,6 +21,7 @@ class Configuration {
     Notify notify = new Notify()
     BurntToast burnttoast = new BurntToast()
     Slack slack = new Slack()
+    Timeout timeout = new Timeout()
 
     static Properties createProperties(Map properties, String parentKey) {
         def result = new Properties()
@@ -86,6 +87,10 @@ class Configuration {
 
     void slack(Closure closure) {
         configure(closure, slack)
+    }
+
+    void timeout(Closure closure) {
+        configure(closure, timeout)
     }
 
     Properties asProperties() {

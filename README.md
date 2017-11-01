@@ -66,6 +66,10 @@ notifier {
         time = 10
         unit = java.util.concurrent.TimeUnit.SECONDS
     }
+    timeout {
+        time = 1
+        unit = java.util.concurrent.TimeUnit.SECONDS
+    }
     growl {
         port = 23053
         host = 'localhost'
@@ -121,6 +125,7 @@ notifier {
 
 `notifier.threshold` allows to bypass notification when the build ends before the configured threshold.  
 `notifier.continuousNotify` activate notifications for continuous build (using `--continuous` or `-t`).
+`notifier.timeout` configures the time Gradle will wait to communicate with a notifier.
 
 All parameters are configured by default, if you're fine with it, no need to write them down.  
 `gradle-notifier` will try to find an available notifier on your system.

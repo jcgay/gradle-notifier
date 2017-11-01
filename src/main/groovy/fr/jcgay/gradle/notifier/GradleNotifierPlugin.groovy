@@ -13,13 +13,13 @@ import org.gradle.util.GradleVersion
 
 import javax.inject.Inject
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS
+
 class GradleNotifierPlugin implements Plugin<Project> {
 
     private static final Logger LOGGER = Logging.getLogger(GradleNotifierPlugin)
 
     private static final Icon GRADLE_ICON = Icon.create(SendNotification.getResource("/GradleLogoReg.png"), 'gradle')
-    private static final Application APPLICATION = Application.builder('application/x-vnd-gradle-inc.gradle', 'Gradle', GRADLE_ICON).build()
-
     private final SendNotification sendNotification
 
     @Inject
@@ -45,9 +45,14 @@ class GradleNotifierPlugin implements Plugin<Project> {
 
     @PackageScope
     Notifier createNotifier(Configuration configuration) {
+        def application = Application.builder('application/x-vnd-gradle-inc.gradle', 'Gradle', GRADLE_ICON)
+        def userTimeout = configuration.timeout
+        if (userTimeout.time && userTimeout.unit) {
+            application.timeout(MILLISECONDS.convert(userTimeout.time, userTimeout.unit))
+        }
         try {
             return sendNotification
-                .setApplication(APPLICATION)
+                .setApplication(application.build())
                 .addConfigurationProperties(mergeProperties(configuration))
                 .initNotifier()
         } catch (SendNotificationException e) {
