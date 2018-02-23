@@ -78,6 +78,9 @@ class GradleNotifierPlugin implements Plugin<Project> {
     }
 
     private static boolean shouldNotify(Project project) {
+        if (project.gradle.rootProject.name == 'buildSrc') {
+            return false
+        }
         if (project.gradle.startParameter.isContinuous()) {
             return project.notifier.continuousNotify
         }

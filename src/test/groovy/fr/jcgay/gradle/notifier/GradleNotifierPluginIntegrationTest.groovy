@@ -60,6 +60,34 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
     }
 
     @Unroll
+    def "should not send notification when building buildSrc with Gradle #version"() {
+        given:
+        gradleVersion = version
+
+        and:
+        buildFile << '''
+            apply plugin: 'fr.jcgay.gradle-notifier'
+
+            notifier {
+                implementation = 'unknown'
+            }
+        '''.stripIndent()
+
+        settingsFile << '''
+            rootProject.name = 'buildSrc'
+        '''.stripIndent()
+
+        when:
+        def result = runTasksSuccessfully('tasks')
+
+        then:
+        !result.standardOutput.contains('Sending notification:')
+
+        where:
+        version << versions
+    }
+
+    @Unroll
     def "should send notification when build is using continuous feature with parameter and Gradle #version"() {
         given:
         gradleVersion = version
