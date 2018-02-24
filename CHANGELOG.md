@@ -1,3 +1,9 @@
+# 2.2.0
+***
+
+- Upgrade to Gradle 4.5.1 ([3ab1ba6](http://github.com/jcgay/gradle-notifier/commit/3ab1ba6b2aaaf271bdb13275d30a3b15960aafe4))
+- Don't notify when building buildSrc ([35a4b90](http://github.com/jcgay/gradle-notifier/commit/35a4b902a44a4344d6612c8446f0fa69092ffc7e)) - Fix [Issue#9](https://github.com/jcgay/gradle-notifier/issues/9)
+
 # 2.1.0
 ***
 

@@ -25,7 +25,7 @@ initscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.1.0'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.2.0'
     }
 }
 
@@ -45,7 +45,7 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.1.0'
+        classpath group: 'fr.jcgay', name: 'gradle-notifier', version: '2.2.0'
     }
 }
 
