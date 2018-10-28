@@ -5,7 +5,7 @@ import spock.lang.Unroll
 
 class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
 
-    static def versions = ['4.2.1', '4.3', '4.5.1']
+    static def versions = ['4.2.1', '4.3', '4.5.1', '4.10.2']
 
     void setup() {
         logLevel = LogLevel.DEBUG
