@@ -1,3 +1,11 @@
+# 3.0.0
+***
+
+- Use send-notification v0.15.0 ([c5ee391](http://github.com/jcgay/gradle-notifier/commit/c5ee3917fca1d6bdaa6808f66c5d6141fbb7e38f))
+    - Use jPowerShell 3.0.1 [Fixes [#10](https://github.com/jcgay/send-notification/issues/10)] ([b67f9bd](http://github.com/jcgay/send-notification/commit/b67f9bda4e8290468328ab10b97fc3c5a1b1c37b))
+- Upgrade to Gradle 4.10.2 ([693c46e](http://github.com/jcgay/gradle-notifier/commit/693c46e087a1ab386758b193bcc3c08077dd64b7))
+- Migrate to Java 8 ([c3d7823](http://github.com/jcgay/gradle-notifier/commit/c3d7823d7882a9c049e84ab65bcb5ab670260e3a))
+
 # 2.2.0
 ***
 
