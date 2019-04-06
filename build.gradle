@@ -1,15 +1,15 @@
 plugins {
-    id "com.gradle.plugin-publish" version "0.10.1"
     id 'com.github.kt3k.coveralls' version '2.8.2'
     id "com.bmuschko.nexus" version "2.3.1"
     id "pl.allegro.tech.build.axion-release" version "1.8.1"
     id "com.jfrog.bintray" version "1.8.4"
     id 'com.github.ben-manes.versions' version '0.21.0'
     id "io.codearte.nexus-staging" version "0.11.0"
+    id 'java-gradle-plugin'
+    id 'groovy'
+    id 'jacoco'
+    id "com.gradle.plugin-publish" version "0.10.1"
 }
-
-apply plugin: 'groovy'
-apply plugin: 'jacoco'
 
 group = 'fr.jcgay'
 
@@ -36,15 +36,11 @@ dependencies {
 
     compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.15.1'
 
+    testImplementation gradleTestKit()
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
-    testCompile(group: 'org.spockframework', name:'spock-core', version: '1.3-groovy-2.4')
-    testCompile group: 'com.netflix.nebula', name: 'nebula-test', version: '7.2.3'
+    testCompile(group: 'org.spockframework', name:'spock-core', version: '1.3-groovy-2.5')
     testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
     testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.2.10'
-}
-
-test {
-    jvmArgs "-XX:MaxPermSize=256m"
 }
 
 release.dependsOn build

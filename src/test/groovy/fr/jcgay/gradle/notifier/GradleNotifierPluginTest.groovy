@@ -1,23 +1,19 @@
 package fr.jcgay.gradle.notifier
+
 import fr.jcgay.gradle.notifier.extension.Configuration
 import fr.jcgay.notification.Notifier
 import fr.jcgay.notification.SendNotification
 import fr.jcgay.notification.SendNotificationException
 import fr.jcgay.notification.notifier.DoNothingNotifier
-import nebula.test.PluginProjectSpec
 import org.junit.Rule
 import org.junit.contrib.java.lang.system.ProvideSystemProperty
+import spock.lang.Specification
 
-class GradleNotifierPluginTest extends PluginProjectSpec {
+class GradleNotifierPluginTest extends Specification {
 
     @Rule
     ProvideSystemProperty system = new ProvideSystemProperty('notifier.anybar.port', '9999')
         .and('notifier.implementation', 'anybar')
-
-    @Override
-    String getPluginName() {
-        'fr.jcgay.gradle-notifier'
-    }
 
     def "should merge user configuration and system properties"() {
         given:

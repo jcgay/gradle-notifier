@@ -1,35 +1,53 @@
 package fr.jcgay.gradle.notifier
-import nebula.test.IntegrationSpec
-import org.gradle.api.logging.LogLevel
+
+import static org.gradle.testkit.runner.TaskOutcome.*
+import org.gradle.testkit.runner.GradleRunner
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
+import spock.lang.Specification
 import spock.lang.Unroll
 
-class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
 
-    static def versions = ['4.2.1', '4.3', '4.5.1', '4.10.2']
+class GradleNotifierPluginIntegrationTest extends Specification {
 
-    void setup() {
-        logLevel = LogLevel.DEBUG
+    static def versions = ['4.2.1', '4.3', '4.5.1', '4.10.2', '5.3.1', '5.4']
+
+    @Rule
+    TemporaryFolder testProjectDir = new TemporaryFolder()
+
+    File settingsFile
+    File buildFile
+
+    def setup() {
+        settingsFile = testProjectDir.newFile('settings.gradle')
+        buildFile = testProjectDir.newFile('build.gradle')
     }
 
     @Unroll
     def "should send notification when build ends with Gradle #version"() {
         given:
-        gradleVersion = version
-
-        and:
-        buildFile << '''
-            apply plugin: 'fr.jcgay.gradle-notifier'
+        settingsFile << "rootProject.name = 'test-$version'"
+        buildFile << """
+            plugins {
+                id 'fr.jcgay.gradle-notifier'
+            }
 
             notifier {
                 implementation = 'unknown'
             }
-        '''.stripIndent()
+        """.stripIndent()
 
         when:
-        def result = runTasksSuccessfully('tasks')
+        def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments("tasks", "--debug")
+            .withGradleVersion(version)
+            .withPluginClasspath()
+            .build()
 
         then:
-        result.standardOutput.contains('Sending notification:')
+        result.output.contains('Sending notification:')
+        result.task(":tasks").outcome == SUCCESS
 
         where:
         version << versions
@@ -38,11 +56,11 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
     @Unroll
     def "should not send notification when build is using continuous feature with Gradle #version"() {
         given:
-        gradleVersion = version
-
-        and:
+        settingsFile << "rootProject.name = 'test-continuous-$version'"
         buildFile << '''
-            apply plugin: 'fr.jcgay.gradle-notifier'
+            plugins {
+                id 'fr.jcgay.gradle-notifier'
+            }
 
             notifier {
                 implementation = 'unknown'
@@ -50,10 +68,16 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         '''.stripIndent()
 
         when:
-        def result = runTasksSuccessfully('tasks', '--continuous')
+        def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments("tasks", '--continuous', "--debug")
+            .withGradleVersion(version)
+            .withPluginClasspath()
+            .build()
 
         then:
-        !result.standardOutput.contains('Sending notification:')
+        !result.output.contains('Sending notification:')
+        result.task(":tasks").outcome == SUCCESS
 
         where:
         version << versions
@@ -62,11 +86,10 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
     @Unroll
     def "should not send notification when building buildSrc with Gradle #version"() {
         given:
-        gradleVersion = version
-
-        and:
         buildFile << '''
-            apply plugin: 'fr.jcgay.gradle-notifier'
+            plugins {
+                id 'fr.jcgay.gradle-notifier'
+            }
 
             notifier {
                 implementation = 'unknown'
@@ -78,10 +101,16 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         '''.stripIndent()
 
         when:
-        def result = runTasksSuccessfully('tasks')
+        def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments("tasks", "--debug")
+            .withGradleVersion(version)
+            .withPluginClasspath()
+            .build()
 
         then:
-        !result.standardOutput.contains('Sending notification:')
+        !result.output.contains('Sending notification:')
+        result.task(":tasks").outcome == SUCCESS
 
         where:
         version << versions
@@ -90,11 +119,10 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
     @Unroll
     def "should send notification when build is using continuous feature with parameter and Gradle #version"() {
         given:
-        gradleVersion = version
-
-        and:
         buildFile << '''
-            apply plugin: 'fr.jcgay.gradle-notifier'
+            plugins {
+                id 'fr.jcgay.gradle-notifier'
+            }
 
             notifier {
                 implementation = 'unknown'
@@ -103,10 +131,16 @@ class GradleNotifierPluginIntegrationTest extends IntegrationSpec {
         '''.stripIndent()
 
         when:
-        def result = runTasksSuccessfully('tasks', '--continuous')
+        def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments("tasks", '--continuous', "--debug")
+            .withGradleVersion(version)
+            .withPluginClasspath()
+            .build()
 
         then:
-        result.standardOutput.contains('Sending notification:')
+        result.output.contains('Sending notification:')
+        result.task(":tasks").outcome == SUCCESS
 
         where:
         version << versions
