@@ -37,7 +37,7 @@ dependencies {
     compile group: 'fr.jcgay.send-notification', name: 'send-notification', version: '0.16.0'
 
     testImplementation gradleTestKit()
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
     testCompile(group: 'org.spockframework', name:'spock-core', version: '1.3-groovy-2.5')
     testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
     testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.3.0'
