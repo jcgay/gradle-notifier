@@ -14,6 +14,7 @@ plugins {
     id("groovy")
     id("jacoco")
     id("com.gradle.plugin-publish") version "0.10.1"
+    kotlin("jvm") version "1.3.50"
 }
 
 group = "fr.jcgay"
@@ -40,6 +41,7 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
+    implementation(kotlin("stdlib-jdk8"))
 
     implementation(group = "fr.jcgay.send-notification", name = "send-notification", version = "0.16.0")
 
@@ -94,6 +96,16 @@ tasks {
             xml.isEnabled = true
             html.isEnabled = true
         }
+    }
+
+    compileGroovy {
+        dependsOn(compileKotlin)
+        classpath += files(compileKotlin.get().destinationDir)
+    }
+
+    compileTestGroovy {
+        dependsOn(compileTestKotlin)
+        classpath += files(compileTestKotlin.get().destinationDir)
     }
 }
 

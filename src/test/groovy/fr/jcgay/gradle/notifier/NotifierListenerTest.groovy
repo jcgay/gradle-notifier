@@ -1,4 +1,5 @@
 package fr.jcgay.gradle.notifier
+
 import fr.jcgay.gradle.notifier.extension.TimeThreshold
 import fr.jcgay.notification.Notification
 import fr.jcgay.notification.Notifier
@@ -8,7 +9,6 @@ import org.gradle.api.Project
 import org.gradle.api.invocation.Gradle
 import spock.lang.Specification
 
-import static KnownElapsedTimeClock.elapsedTimeClock
 import static fr.jcgay.gradle.notifier.Status.FAILURE
 import static fr.jcgay.gradle.notifier.Status.SUCCESS
 import static fr.jcgay.notification.Notification.Level.ERROR
@@ -22,7 +22,7 @@ class NotifierListenerTest extends Specification {
     NotifierListener listener
 
     def setup() {
-        listener = new NotifierListener(notifier, elapsedTimeClock(SECONDS.toMillis(5)), new TimeThreshold())
+        listener = new NotifierListener(notifier, new KnownElapsedTimeClock(SECONDS.toMillis(5)), new TimeThreshold())
     }
 
     def 'should send a successful notification when build ends'() {
@@ -80,8 +80,8 @@ class NotifierListenerTest extends Specification {
         given:
         def listener = new NotifierListener(
             notifier,
-            elapsedTimeClock(SECONDS.toMillis(5)),
-            new TimeThreshold(time: 10L, unit: SECONDS)
+            new KnownElapsedTimeClock(SECONDS.toMillis(5)),
+            new TimeThreshold(10L, SECONDS)
         )
 
         when:
@@ -95,8 +95,8 @@ class NotifierListenerTest extends Specification {
         given:
         def listener = new NotifierListener(
             notifier,
-            elapsedTimeClock(SECONDS.toMillis(5)),
-            new TimeThreshold(time: 10L, unit: SECONDS)
+            new KnownElapsedTimeClock(SECONDS.toMillis(5)),
+            new TimeThreshold(10L, SECONDS)
         )
 
         when:
