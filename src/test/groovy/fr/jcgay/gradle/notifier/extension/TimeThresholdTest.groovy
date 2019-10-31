@@ -1,9 +1,10 @@
 package fr.jcgay.gradle.notifier.extension
 
+import fr.jcgay.gradle.notifier.KnownElapsedTimeClock
 import spock.lang.Specification
 
-import static fr.jcgay.gradle.notifier.KnownElapsedTimeClock.elapsedTimeClock
-import static java.util.concurrent.TimeUnit.*
+import static java.util.concurrent.TimeUnit.MILLISECONDS
+import static java.util.concurrent.TimeUnit.SECONDS
 
 class TimeThresholdTest extends Specification {
 
@@ -12,8 +13,8 @@ class TimeThresholdTest extends Specification {
         a == b
 
         where:
-        a = new TimeThreshold(time: 1, unit: SECONDS)
-        b = new TimeThreshold(time: 1, unit: SECONDS)
+        a = new TimeThreshold(1, SECONDS)
+        b = new TimeThreshold(1, SECONDS)
     }
 
     def 'should be greater'() {
@@ -22,8 +23,8 @@ class TimeThresholdTest extends Specification {
 
         where:
         a                                          | b
-        new TimeThreshold(time: 1, unit: SECONDS)  | new TimeThreshold(time: 1, unit: MILLISECONDS)
-        new TimeThreshold(time: 10, unit: SECONDS) | new TimeThreshold(time: 1, unit: SECONDS)
+        new TimeThreshold(1, SECONDS)  | new TimeThreshold(1, MILLISECONDS)
+        new TimeThreshold(10, SECONDS) | new TimeThreshold(1, SECONDS)
     }
 
     def 'should be less'() {
@@ -32,15 +33,15 @@ class TimeThresholdTest extends Specification {
 
         where:
         a                                               | b
-        new TimeThreshold(time: 1, unit: MILLISECONDS)  | new TimeThreshold(time: 1, unit: SECONDS)
-        new TimeThreshold(time: 1, unit: SECONDS)       | new TimeThreshold(time: 10, unit: SECONDS)
+        new TimeThreshold(1, MILLISECONDS)  | new TimeThreshold(1, SECONDS)
+        new TimeThreshold(1, SECONDS)       | new TimeThreshold(10, SECONDS)
     }
 
     def 'should create from stopwath'() {
         when:
-        def result = TimeThreshold.of(elapsedTimeClock(5))
+        def result = new TimeThreshold(new KnownElapsedTimeClock(5))
 
         then:
-        result == new TimeThreshold(time: 5, unit: MILLISECONDS)
+        result == new TimeThreshold(5, MILLISECONDS)
     }
 }
