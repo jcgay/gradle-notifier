@@ -1,7 +1,6 @@
 package fr.jcgay.gradle.notifier.extension
 
-import groovy.lang.Closure
-import org.gradle.util.ConfigureUtil.configure
+import org.gradle.api.Action
 import java.util.Properties
 
 
@@ -27,51 +26,51 @@ open class Configuration {
     var threshold = TimeThreshold()
     var timeout = Timeout()
 
-    fun growl(closure: Closure<Any>) {
-        configure(closure, growl)
+    fun growl(closure: Action<Growl>) {
+        closure.execute(growl)
     }
-    fun snarl(closure: Closure<Any>) {
-        configure(closure, snarl)
+    fun snarl(closure: Action<Snarl>) {
+        closure.execute(snarl)
     }
-    fun pushbullet(closure: Closure<Any>) {
-        configure(closure, pushbullet)
+    fun pushbullet(closure: Action<Pushbullet>) {
+        closure.execute(pushbullet)
     }
-    fun notifySend(closure: Closure<Any>) {
-        configure(closure, notifySend)
+    fun notifySend(closure: Action<NotifySend>) {
+        closure.execute(notifySend)
     }
-    fun notificationcenter(closure: Closure<Any>) {
-        configure(closure, notificationCenter)
+    fun notificationcenter(closure: Action<NotificationCenter>) {
+        closure.execute(notificationCenter)
     }
-    fun systemtray(closure: Closure<Any>) {
-        configure(closure, systemTray)
+    fun systemtray(closure: Action<SystemTray>) {
+        closure.execute(systemTray)
     }
-    fun notifu(closure: Closure<Any>) {
-        configure(closure, notifu)
+    fun notifu(closure: Action<Notifu>) {
+        closure.execute(notifu)
     }
-    fun kdialog(closure: Closure<Any>) {
-        configure(closure, kdialog)
+    fun kdialog(closure: Action<Kdialog>) {
+        closure.execute(kdialog)
     }
-    fun anybar(closure: Closure<Any>) {
-        configure(closure, anyBar)
+    fun anybar(closure: Action<AnyBar>) {
+        closure.execute(anyBar)
     }
-    fun toaster(closure: Closure<Any>) {
-        configure(closure, toaster)
+    fun toaster(closure: Action<Toaster>) {
+        closure.execute(toaster)
     }
-    fun notify(closure: Closure<Any>) {
-        configure(closure, notify)
+    fun notify(closure: Action<Notify>) {
+        closure.execute(notify)
     }
-    fun burnttoast(closure: Closure<Any>) {
-        configure(closure, burnttoast)
+    fun burnttoast(closure: Action<BurntToast>) {
+        closure.execute(burnttoast)
     }
-    fun slack(closure: Closure<Any>) {
-        configure(closure, slack)
+    fun slack(closure: Action<Slack>) {
+        closure.execute(slack)
     }
 
-    fun threshold(closure: Closure<Any>) {
-        configure(closure, threshold)
+    fun threshold(closure: Action<TimeThreshold>) {
+        closure.execute(threshold)
     }
-    fun timeout(closure: Closure<Any>) {
-        configure(closure, timeout)
+    fun timeout(closure: Action<Timeout>) {
+        closure.execute(timeout)
     }
 
     fun asProperties(): Properties {

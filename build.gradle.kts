@@ -14,7 +14,7 @@ plugins {
     id("groovy")
     id("jacoco")
     id("com.gradle.plugin-publish") version "0.10.1"
-    kotlin("jvm") version "1.3.50"
+    `kotlin-dsl`
 }
 
 group = "fr.jcgay"
@@ -40,11 +40,11 @@ repositories {
 
 dependencies {
     implementation(gradleApi())
-    implementation(localGroovy())
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(group = "fr.jcgay.send-notification", name = "send-notification", version = "0.16.0")
 
+    testImplementation(localGroovy())
     testImplementation(gradleTestKit())
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.13.2")
     testImplementation(group = "org.spockframework", name = "spock-core", version = "1.3-groovy-2.5")
@@ -98,14 +98,24 @@ tasks {
         }
     }
 
-    compileGroovy {
-        dependsOn(compileKotlin)
-        classpath += files(compileKotlin.get().destinationDir)
-    }
-
     compileTestGroovy {
         dependsOn(compileTestKotlin)
         classpath += files(compileTestKotlin.get().destinationDir)
+    }
+}
+
+kotlinDslPluginOptions {
+    jvmTarget.set(JavaVersion.VERSION_1_8.toString())
+    experimentalWarning.set(false)
+}
+
+gradlePlugin {
+    plugins {
+        create("gradleNotifierPlugin") {
+            id = "fr.jcgay.gradle-notifier"
+            displayName = "Gradle Notifier"
+            implementationClass = "fr.jcgay.gradle.notifier.GradleNotifierPlugin"
+        }
     }
 }
 
@@ -114,13 +124,6 @@ pluginBundle {
     vcsUrl = "https://github.com/jcgay/gradle-notifier"
     description = "A plugin to have desktop notification when a build ends"
     tags = listOf("notification", "desktop", "growl", "snarl", "notification center", "anybar", "notify-send", "pushbullet", "toaster")
-
-    plugins {
-        create("gradleNotifierPlugin") {
-            id = "fr.jcgay.gradle-notifier"
-            displayName = "Gradle Notifier"
-        }
-    }
 }
 
 bintray {
