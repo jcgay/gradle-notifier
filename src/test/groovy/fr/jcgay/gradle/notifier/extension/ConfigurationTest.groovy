@@ -61,8 +61,8 @@ class ConfigurationTest extends Specification {
 
         when:
         configuration.threshold {
-            time = 3
-            unit = SECONDS
+            it.time = 3
+            it.unit = SECONDS
         }
 
         then:
@@ -75,8 +75,8 @@ class ConfigurationTest extends Specification {
 
         when:
         configuration.timeout {
-            time = 3
-            unit = SECONDS
+            it.time = 3
+            it.unit = SECONDS
         }
 
         then:
