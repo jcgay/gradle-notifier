@@ -7,7 +7,6 @@ plugins {
     id("com.github.kt3k.coveralls") version "2.8.4"
     id("com.bmuschko.nexus") version "2.3.1"
     id("pl.allegro.tech.build.axion-release") version "1.10.2"
-    id("com.jfrog.bintray") version "1.8.4"
     id("com.github.ben-manes.versions") version "0.27.0"
     id("io.codearte.nexus-staging") version "0.11.0"
     id("java-gradle-plugin")
@@ -74,17 +73,8 @@ tasks {
         mustRunAfter(uploadArchives)
     }
 
-    bintrayUpload {
-        doFirst {
-            if (!project.properties.keys.containsAll(listOf("bintrayUsername", "bintrayKey"))) {
-                throw StopExecutionException("Bintray credentials not correctly defined, set 'bintrayUsername' and 'bintrayKey' properties")
-            }
-        }
-        mustRunAfter(uploadArchives)
-    }
-
     register("publish") {
-        dependsOn(uploadArchives, closeAndReleaseRepository, publishPlugins, bintrayUpload)
+        dependsOn(uploadArchives, closeAndReleaseRepository, publishPlugins)
     }
 
     closeAndReleaseRepository {
@@ -124,27 +114,6 @@ pluginBundle {
     vcsUrl = "https://github.com/jcgay/gradle-notifier"
     description = "A plugin to have desktop notification when a build ends"
     tags = listOf("notification", "desktop", "growl", "snarl", "notification center", "anybar", "notify-send", "pushbullet", "toaster")
-}
-
-bintray {
-    val bintrayUsername: String? by project
-    val bintrayKey: String? by project
-
-    bintrayUsername?.let { user = it }
-    bintrayKey?.let { key = it }
-
-    setConfigurations("archives")
-    with(pkg) {
-        repo = "maven"
-        name = "gradle-notifier"
-        setLicenses("MIT")
-        vcsUrl = "https://github.com/jcgay/gradle-notifier.git"
-        with(version) {
-            name = project.version.toString()
-            desc = "Gradle Notifier ${project.version}"
-            vcsTag = "v${project.version}"
-        }
-    }
 }
 
 val modifyPom : Closure<MavenPom> by ext
