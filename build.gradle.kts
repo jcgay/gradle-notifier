@@ -4,7 +4,7 @@ import pl.allegro.tech.build.axion.release.domain.properties.TagProperties
 import pl.allegro.tech.build.axion.release.domain.scm.ScmPosition
 
 plugins {
-    id("com.github.kt3k.coveralls") version "2.8.4"
+    id("com.github.kt3k.coveralls") version "2.10.2"
     id("com.bmuschko.nexus") version "2.3.1"
     id("pl.allegro.tech.build.axion-release") version "1.10.2"
     id("com.github.ben-manes.versions") version "0.27.0"
