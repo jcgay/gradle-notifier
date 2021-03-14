@@ -10,7 +10,7 @@ import static org.gradle.testkit.runner.TaskOutcome.*
 
 class GradleNotifierPluginIntegrationTest extends Specification {
 
-    static def versions = ['4.2.1', '4.3', '4.5.1', '4.10.2', '5.3.1', '5.6.3']
+    static def versions = ['4.2.1', '4.3', '4.5.1', '4.10.2', '5.3.1', '5.6.3', '6.8.3']
 
     @Rule
     TemporaryFolder testProjectDir = new TemporaryFolder()

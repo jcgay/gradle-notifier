@@ -28,10 +28,10 @@ class GradleNotifierPlugin constructor(private val sendNotification: SendNotific
         project.extensions.create("notifier", Configuration::class.java)
 
         project.afterEvaluate {
-            if (shouldNotifiy(this)) {
-                val config = this.extensions.getByType(Configuration::class.java)
+            if (shouldNotifiy(it)) {
+                val config = it.extensions.getByType(Configuration::class.java)
                 val notifier: Notifier = createNotifier(config)
-                this.gradle.addBuildListener(NotifierListener(notifier, startTime, config.threshold))
+                it.gradle.addBuildListener(NotifierListener(notifier, startTime, config.threshold))
             }
         }
     }

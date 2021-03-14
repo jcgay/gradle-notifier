@@ -1,5 +1,6 @@
 
 import groovy.lang.Closure
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import pl.allegro.tech.build.axion.release.domain.properties.TagProperties
 import pl.allegro.tech.build.axion.release.domain.scm.ScmPosition
 
@@ -13,7 +14,7 @@ plugins {
     id("groovy")
     id("jacoco")
     id("com.gradle.plugin-publish") version "0.10.1"
-    `kotlin-dsl`
+    kotlin("jvm") version "1.4.31"
 }
 
 group = "fr.jcgay"
@@ -28,9 +29,11 @@ scmVersion {
 
 project.version = scmVersion.version
 
+val javaVersion = JavaLanguageVersion.of(JavaVersion.VERSION_1_8.majorVersion)
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion.set(javaVersion)
+    }
 }
 
 repositories {
@@ -94,9 +97,11 @@ tasks {
     }
 }
 
-kotlinDslPluginOptions {
-    jvmTarget.set(JavaVersion.VERSION_1_8.toString())
-    experimentalWarning.set(false)
+val compiler = javaToolchains.compilerFor {
+    languageVersion.set(javaVersion)
+}
+tasks.withType<KotlinJvmCompile>().configureEach {
+    kotlinOptions.jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
 }
 
 gradlePlugin {
