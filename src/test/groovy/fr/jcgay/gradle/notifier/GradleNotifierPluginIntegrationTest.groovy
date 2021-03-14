@@ -6,7 +6,7 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static org.gradle.testkit.runner.TaskOutcome.*
+import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 class GradleNotifierPluginIntegrationTest extends Specification {
 
@@ -144,5 +144,32 @@ class GradleNotifierPluginIntegrationTest extends Specification {
 
         where:
         version << versions
+    }
+
+    def "should be compatible with configuration cache feature"() {
+        given:
+        def version = versions.last()
+        settingsFile << "rootProject.name = 'test-$version'"
+        buildFile << """
+            plugins {
+                id 'fr.jcgay.gradle-notifier'
+            }
+
+            notifier {
+                implementation = 'unknown'
+            }
+        """.stripIndent()
+
+        when:
+        def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments("tasks", "--configuration-cache")
+            .withGradleVersion(version)
+            .withPluginClasspath()
+            .build()
+
+        then:
+        result.task(":tasks").outcome == SUCCESS
+        result.output.contains('Sending notification:')
     }
 }
