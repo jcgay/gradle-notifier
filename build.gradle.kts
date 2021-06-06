@@ -13,7 +13,7 @@ plugins {
     id("java-gradle-plugin")
     id("groovy")
     id("jacoco")
-    id("com.gradle.plugin-publish") version "0.10.1"
+    id("com.gradle.plugin-publish") version "0.15.0"
     kotlin("jvm") version "1.4.31"
 }
 
