@@ -9,7 +9,7 @@ plugins {
     id("com.bmuschko.nexus") version "2.3.1"
     id("pl.allegro.tech.build.axion-release") version "1.10.2"
     id("com.github.ben-manes.versions") version "0.38.0"
-    id("io.codearte.nexus-staging") version "0.11.0"
+    id("io.codearte.nexus-staging") version "0.30.0"
     id("java-gradle-plugin")
     id("groovy")
     id("jacoco")
