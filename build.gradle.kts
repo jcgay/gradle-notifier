@@ -48,7 +48,7 @@ dependencies {
 
     testImplementation(localGroovy())
     testImplementation(gradleTestKit())
-    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.19.0")
+    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.26.3")
     testImplementation(group = "org.spockframework", name = "spock-core", version = "1.3-groovy-2.5")
     testImplementation(group = "com.github.stefanbirkner", name = "system-rules", version = "1.19.0")
     testRuntimeOnly(group = "cglib", name = "cglib-nodep", version = "3.3.0")
