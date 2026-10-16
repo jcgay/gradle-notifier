@@ -14,7 +14,7 @@ plugins {
     id("groovy")
     id("jacoco")
     id("com.gradle.plugin-publish") version "0.10.1"
-    kotlin("jvm") version "1.4.31"
+    kotlin("jvm") version "1.9.25"
 }
 
 group = "fr.jcgay"
